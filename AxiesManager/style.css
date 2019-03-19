@@ -1,0 +1,175 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+
+.axie {
+    max-width: 250px;
+}
+
+#loader {
+    display: block;
+}
+
+    #loader p {
+        font-size: 15px;
+    }
+
+.dataTables_wrapper {
+    width: max-content;
+    width: fit-content;
+}
+
+/* Start of table styling */
+table.dataTable {
+    border: 1px solid #1C6EA4;
+    background-color: #EEEEEE;
+    text-align: left;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+    table.dataTable td, table.dataTable th {
+        border: 1px solid #AAAAAA;
+        padding: 3px 2px;
+    }
+
+    table.dataTable tbody tr.even:hover, table.dataTable tbody tr.odd:hover {
+        background-color: rgba(0, 0, 0, 0.10);
+    }
+
+    table.dataTable tbody tr.even {
+        background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    table.dataTable tbody tr:last-child {
+        text-align: left;
+    }
+
+    table.dataTable tbody td {
+        padding: 0px 10px !important;
+        font-size: 16px;
+        text-transform: capitalize;
+    }
+
+        table.dataTable tbody td.centerAligned {
+            text-align: center;
+        }
+
+        table.dataTable tbody td.beast {
+            background-color: rgba(255, 184, 18, 0.15);
+        }
+
+        table.dataTable tbody td.aquatic {
+            background-color: rgba(0, 184, 206, 0.15);
+        }
+
+        table.dataTable tbody td.plant {
+            background-color: rgba(108, 192, 0, 0.15);
+        }
+
+        table.dataTable tbody td.bird {
+            background-color: rgba(255, 139, 189, 0.15);
+        }
+
+        table.dataTable tbody td.bug {
+            background-color: rgba(255, 83, 65, 0.15);
+        }
+
+        table.dataTable tbody td.reptile {
+            background-color: rgba(200, 138, 224, 0.15);
+        }
+
+        table.dataTable tbody td.axieThumbnail {
+            max-width: 170px;
+        }
+
+    table.dataTable tbody .axieThumbnail {
+        max-width: 150px;
+    }
+
+        table.dataTable tbody .axieThumbnail img {
+            max-width: 150px;
+        }
+
+    table.dataTable tbody td.axieThumbnail a {
+        mix-blend-mode: multiply;
+    }
+
+    table.dataTable tbody td.axieThumbnail span {
+        font-weight: bold;
+        font-style: normal;
+        display: block;
+        text-align: center;
+    }
+
+    table .dataTable tbody td.axieThumbnail a {
+        display: block;
+    }
+
+        table.dataTable tbody td.axieThumbnail a:hover {
+            filter: grayscale(75%);
+        }
+
+    table.dataTable thead {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+
+        table.dataTable thead tr#headerFilters input {
+            display: block;
+            font-size: 11px;
+            width: 100%;
+            box-sizing: border-box
+        }
+
+        table.dataTable thead th {
+            display: table-cell;
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+            padding: 10px 6px !important;
+        }
+
+            table.dataTable thead th input#searchFieldThumbnail {
+                visibility: hidden;
+            }
+
+            table .dataTable thead th:first-child {
+                border-left: none;
+            }
+
+    table.dataTable tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background: #D0E4F5;
+        background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        border-top: 2px solid #444444;
+    }
+
+        table.dataTable tfoot td {
+            font-size: 14px;
+        }
+
+        table.dataTable tfoot .links {
+            text-align: right;
+        }
+
+            table.dataTable tfoot .links a {
+                display: inline-block;
+                background: #1C6EA4;
+                color: #FFFFFF;
+                padding: 2px 8px;
+                border-radius: 5px;
+            }
+/* End of table styling */
