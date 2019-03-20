@@ -47,7 +47,7 @@ function updateEthAddress(address) {
         ///clearInterval(intervalEthAddressCheck);
         ethAddress = address;
         $('#ethAddressInput').val(ethAddress);
-        requestAxies();
+        requestInitialData();
     }
     else {
         setTimeout(function () { // web3.eth.getAccounts returns lower case in 1st run if not within setTimeout (bug?)
@@ -61,7 +61,7 @@ function updateEthAddress(address) {
                         console.log('No Ethereum address');
                     } else {
                         document.getElementById('ethAddressField').innerHTML = result[0];
-                        requestAxies();
+                        requestInitialData();
                     };
                     return (ethAddress);
                     console.log('updateEthAddress DONE');
@@ -71,34 +71,9 @@ function updateEthAddress(address) {
     }
 };
 
-// Request Axie Infinity API for Axies list
-function requestAxies() {
-    const BASE_URL = 'https://axieinfinity.com/api/';
-    let offset = 0; // offset = page
-    let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
-    URL = BASE_URL + 'addresses/' + ethAddress + '/axies?stage=' + stage;
-    // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
-
-    $('#loader').dialog({
-        modal: true,
-        resizable: false,
-        draggable: false,
-        minWidth: 400,
-        show: { effect: 'puff' },
-        hide: { effect: 'explode', duration: 1000 }
-    });
-    $("#axiesLoadingProgressBar").progressbar({ value: false });
-
-    $('#loader p').text('Calling out all Axies...');
-    axios.get(URL)
-        .then(response => {
-            axiesDataObj = response;
-            axiesDataArr = axiesDataObj['data']['axies'];
-            loadAllPagesToArray();
-        })
-        .catch(error => {
-            console.log(error);
-        })
+function requestInitialData() {
+    requestAxies();
+    requestBattleTeams();
 }
 
 async function loadAllPagesToArray() {
@@ -133,7 +108,7 @@ async function loadAllPagesToArray() {
 
 function loadAxiesExtendedData() {
     let extendedData_MovesStats = getMovesStats();
-    let extendedData_pendingEXP = getpendingEXP();
+    //let extendedData_pendingEXP = getpendingEXP();
     for (let i = 0; i < axiesDataArr.length; i++) {
         axiesDataArr[i]['parts']['stats'] = {
             'accuracy': extendedData_MovesStats[i]['accuracy'],

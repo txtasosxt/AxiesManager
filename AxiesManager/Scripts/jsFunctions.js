@@ -1,4 +1,34 @@
-﻿async function paintAxies() {
+﻿// Request Axie Infinity API for Axies list
+function requestAxies() {
+    const BASE_URL = 'https://axieinfinity.com/api/';
+    let offset = 0; // offset = page
+    let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+    URL = BASE_URL + 'addresses/' + ethAddress + '/axies?stage=' + stage;
+    // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
+
+    $('#loader').dialog({
+        modal: true,
+        resizable: false,
+        draggable: false,
+        minWidth: 400,
+        show: { effect: 'puff' },
+        hide: { effect: 'explode', duration: 1000 }
+    });
+    $("#axiesLoadingProgressBar").progressbar({ value: false });
+
+    $('#loader p').text('Calling out all Axies...');
+    axios.get(URL)
+        .then(response => {
+            axiesDataObj = response;
+            axiesDataArr = axiesDataObj['data']['axies'];
+            loadAllPagesToArray();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
+
+async function paintAxies() {
     $('#loader p').text('Lining them all up...');
     const BASE_URL = 'https://api.axieinfinity.com/v1/figure/';
     axiesImagesInitURL = [];
@@ -91,6 +121,9 @@ function moveAxieClassToParentElement() {
     })
 }
 
-async function getpendingEXP() {
-
+function requestBattleTeams() {
+    const BASE_URL = 'https://axieinfinity.com/api/';
+    let offset = 0; // offset = page
+    let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+    URL = BASE_URL + 'addresses/' + ethAddress + '/axies?stage=' + stage;
 }
