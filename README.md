@@ -1,6 +1,6 @@
 # AxiesManager
 
-Visit the app <a href="/AxiesManager/index.html">HERE</a>
+Visit the app <a href="./AxiesManager/index.html">HERE</a>
 
 
 ToDoList
