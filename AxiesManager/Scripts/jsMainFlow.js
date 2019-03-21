@@ -72,7 +72,8 @@ function updateEthAddress(address) {
 
 function functionsFlow() {
     console.log('functionsFlow called')
-
+    loadingScreenInit();
+    // START of setting chained promises
     let promise1 = new Promise(function (resolve, reject) {
         requestAxies() // (1) Get the 1st page
             .then(() => {
@@ -86,16 +87,17 @@ function functionsFlow() {
             })
     })
     let promise2 = new Promise(function (resolve, reject) {
-        getBattleTeams() // (1) Get all the teams
-            .then(() => {
-                return loadBattleTeams(); // (2) Load all the teams data into an array
-            })
+        getBattleTeams() // Get all the teams
             .then(() => {
                 resolve();
             })
     })
+    // END of setting chained promises
     Promise.all([promise1, promise2])
-        .then(function() {
+        .then(() =>  {
+            return loadBattleTeams(); // Load all the teams data into the "axiesDataArr" Array
+        })
+        .then(() =>  {
             loadDatatable();
         })
 }
@@ -140,6 +142,12 @@ function loadDatatable() {
                     title: 'Average Accuracy', width: '55px', className: 'centerAligned'
                 },
                 { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
+                {
+                    data: function (data, type, row) {
+                        return '<a style="display: block;" href="https://axieinfinity.com/team/' + data['battleTeam']['teamID'] + '" target="_blank">' + data['battleTeam']['name'] + '</a>';
+                    },
+                    title: 'Team', className: 'axieBattleTeam', width: '100px',
+                },
                 {
                     data: 'birthDate', title: 'Birth Date (Local)', type: 'date',
                     className: 'date', width: 'auto', searchable: false,

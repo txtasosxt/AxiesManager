@@ -1,27 +1,33 @@
 ﻿let URLaxies
 
+function loadingScreenInit() {
+    // Setting up the "loader" popup
+    $('#loader').dialog({
+        modal: true,
+        resizable: false,
+        draggable: false,
+        minWidth: 400,
+        show: { effect: 'puff' },
+        hide: { effect: 'explode', duration: 1000 }
+    });
+    $("#axiesLoadingProgressBar").progressbar({ value: false });
+    $('#loader p').text('Calling out all Axies...');
+    $('#pageReloadWarning').css('display', 'inline');
+    $('button#testBtn').css('display', 'none');
+    $('input#ethAddressInput').addClass('input-disabled');
+    $('input#ethAddressInput').attr('readonly', true);
+}
+
 // Request Axie Infinity API for Axies list
 function requestAxies() {
-    console.log('requestAxies called')
     const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = page
     let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
     URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
-
     // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 
     let promise = new Promise(function (resolve, reject) {
-        // Setting up the "loader" popup
-        $('#loader').dialog({
-            modal: true,
-            resizable: false,
-            draggable: false,
-            minWidth: 400,
-            show: { effect: 'puff' },
-            hide: { effect: 'explode', duration: 1000 }
-        });
-        $("#axiesLoadingProgressBar").progressbar({ value: false });
-        $('#loader p').text('Calling out all Axies...');
+        console.log('requestAxies called')
         // Requesting the 1st page of the Axies collection.
         axios.get(URLaxies)
             .then(response => {
@@ -38,9 +44,10 @@ function requestAxies() {
 
 function getAllPagesToArray() {
     let promise = new Promise(async function (resolve, reject) {
+        console.log('getAllPagesToArray called');
         $('#loader p').text('Some are coming from the edges of Lunacia...');
         if (axiesDataObj['data']['totalPages'] > 1) {
-            console.log('Multiple pages is TRUE');
+            console.log('User has multiple pages of Axies');
             let allPages = [];
 
             for (let i = 1; i <= (axiesDataObj['data']['totalPages'] - 1); i++) {
@@ -48,9 +55,7 @@ function getAllPagesToArray() {
             }
             await axios.all(allPages)
                 .then(allPagesObj => {
-                    console.log(allPagesObj);
                     allPagesObj.forEach(singlePageObj => {
-                        console.log(singlePageObj);
                         singlePageObj['data']['axies'].forEach(singleAxie => {
                             axiesDataArr.push(singleAxie);
                         })
@@ -168,7 +173,6 @@ function getMovesStats() {
         }
         extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
     }
-    console.log(extendedData_MovesStats);
     return extendedData_MovesStats;
 }
 
@@ -203,8 +207,35 @@ function getBattleTeams() {
 }
 
 function loadBattleTeams() {
-    let promise = new Promise(function (resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {     
+        console.log('loadBattleTeams called');
 
+        for (let i = 0; i < axiesDataArr.length; i++) {
+            axiesDataArr[i]['battleTeam'] = {
+                name: 'None',
+                teamID: '',
+                axieTeamPosition: null
+            },
+            battleTeams['data']['teams'].forEach(elementLVL1 => {
+                elementLVL1['teamMembers'].forEach(elementLVL2 => {
+                    if (elementLVL2['axieId'] == axiesDataArr[i]['id']) {
+                        axiesDataArr[i]['battleTeam'] = {
+                            name: elementLVL1['name'],
+                            teamID: elementLVL1['teamId'],
+                            axieTeamPosition: elementLVL2['position']
+                        }
+                        if (elementLVL1['name'] == 0) {
+                            axiesDataArr[i]['battleTeam']['name'] = 'Unnamed Team'
+                        }
+                        console.log('Team Name: ' + elementLVL1['name'])
+                        console.log('Team ID: ' + elementLVL1['teamId'])
+                        console.log('Axie ID: ' + axiesDataArr[i]['id'])
+                        console.log('-------------')
+                    }
+                })
+            })
+        }
+        resolve('Promise done!');
     });
     return promise;
 }
