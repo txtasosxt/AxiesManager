@@ -1,7 +1,7 @@
 ﻿let ethAddress;
 let axiesDataObj = {};
 let axiesDataArr = [];
-let URL;
+let battleTeams = {};
 let tableExists = 0; //Boolean, used to check if Table already exists
 
 // Initialise MetaMask
@@ -28,7 +28,6 @@ window.addEventListener('load', async function () {
     });
 });
 
-
 // Checks for address change (setInterval from .ts)
 function checkEthAddressChange() {
     web3.eth.getAccounts(function (error, result) {
@@ -47,7 +46,7 @@ function updateEthAddress(address) {
         ///clearInterval(intervalEthAddressCheck);
         ethAddress = address;
         $('#ethAddressInput').val(ethAddress);
-        requestInitialData();
+        functionsFlow();
     }
     else {
         setTimeout(function () { // web3.eth.getAccounts returns lower case in 1st run if not within setTimeout (bug?)
@@ -61,7 +60,7 @@ function updateEthAddress(address) {
                         console.log('No Ethereum address');
                     } else {
                         document.getElementById('ethAddressField').innerHTML = result[0];
-                        requestInitialData();
+                        functionsFlow();
                     };
                     return (ethAddress);
                     console.log('updateEthAddress DONE');
@@ -71,53 +70,34 @@ function updateEthAddress(address) {
     }
 };
 
-function requestInitialData() {
-    requestAxies();
-    requestBattleTeams();
-}
+function functionsFlow() {
+    console.log('functionsFlow called')
 
-async function loadAllPagesToArray() {
-    $('#loader p').text('Some are coming from the edges of Lunacia...');
-    if (axiesDataObj['data']['totalPages'] > 1) {
-        console.log('Multiple pages is TRUE');
-        let allPages = [];
-
-        for (let i = 1; i <= (axiesDataObj['data']['totalPages'] - 1); i++) {
-            allPages.push(axios.get(URL + '&offset=' + i * 12));
-        }
-        await axios.all(allPages)
-            .then(allPagesObj => {
-                console.log(allPagesObj);
-                allPagesObj.forEach(singlePageObj => {
-                    console.log(singlePageObj);
-                    singlePageObj['data']['axies'].forEach(singleAxie => {
-                        axiesDataArr.push(singleAxie);
-                    })
-                })
+    let promise1 = new Promise(function (resolve, reject) {
+        requestAxies() // (1) Get the 1st page
+            .then(() => {
+                return getAllPagesToArray(); // (2) Get all the pages
             })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-    let axiesImages = await paintAxies();
-    for (let i = 0; i < axiesDataArr.length; i++) {
-        axiesDataArr[i]['img'] = axiesImages[i];
-    }
-    loadAxiesExtendedData();
-}
-
-function loadAxiesExtendedData() {
-    let extendedData_MovesStats = getMovesStats();
-    //let extendedData_pendingEXP = getpendingEXP();
-    for (let i = 0; i < axiesDataArr.length; i++) {
-        axiesDataArr[i]['parts']['stats'] = {
-            'accuracy': extendedData_MovesStats[i]['accuracy'],
-            'attack': extendedData_MovesStats[i]['attack'],
-            'defense': extendedData_MovesStats[i]['defense'],
-            'effects': extendedData_MovesStats[i]['effects']
-        }
-    }
-    loadDatatable();
+            .then(() => {
+                return loadAxiesExtendedData(); // (3) Get parts stats and load datatable
+            })
+            .then(() => {
+                resolve();
+            })
+    })
+    let promise2 = new Promise(function (resolve, reject) {
+        getBattleTeams() // (1) Get all the teams
+            .then(() => {
+                return loadBattleTeams(); // (2) Load all the teams data into an array
+            })
+            .then(() => {
+                resolve();
+            })
+    })
+    Promise.all([promise1, promise2])
+        .then(function() {
+            loadDatatable();
+        })
 }
 
 function loadDatatable() {

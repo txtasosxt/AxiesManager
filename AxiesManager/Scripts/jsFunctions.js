@@ -1,31 +1,90 @@
-﻿// Request Axie Infinity API for Axies list
+﻿let URLaxies
+
+// Request Axie Infinity API for Axies list
 function requestAxies() {
-    const BASE_URL = 'https://axieinfinity.com/api/';
+    console.log('requestAxies called')
+    const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = page
     let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
-    URL = BASE_URL + 'addresses/' + ethAddress + '/axies?stage=' + stage;
+    URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
+
     // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 
-    $('#loader').dialog({
-        modal: true,
-        resizable: false,
-        draggable: false,
-        minWidth: 400,
-        show: { effect: 'puff' },
-        hide: { effect: 'explode', duration: 1000 }
+    let promise = new Promise(function (resolve, reject) {
+        // Setting up the "loader" popup
+        $('#loader').dialog({
+            modal: true,
+            resizable: false,
+            draggable: false,
+            minWidth: 400,
+            show: { effect: 'puff' },
+            hide: { effect: 'explode', duration: 1000 }
+        });
+        $("#axiesLoadingProgressBar").progressbar({ value: false });
+        $('#loader p').text('Calling out all Axies...');
+        // Requesting the 1st page of the Axies collection.
+        axios.get(URLaxies)
+            .then(response => {
+                axiesDataObj = response;
+                axiesDataArr = axiesDataObj['data']['axies'];
+                resolve('Promise done!');
+            })
+            .catch(error => {
+                console.log(error);
+            })
     });
-    $("#axiesLoadingProgressBar").progressbar({ value: false });
+    return promise;
+}
 
-    $('#loader p').text('Calling out all Axies...');
-    axios.get(URL)
-        .then(response => {
-            axiesDataObj = response;
-            axiesDataArr = axiesDataObj['data']['axies'];
-            loadAllPagesToArray();
-        })
-        .catch(error => {
-            console.log(error);
-        })
+function getAllPagesToArray() {
+    let promise = new Promise(async function (resolve, reject) {
+        $('#loader p').text('Some are coming from the edges of Lunacia...');
+        if (axiesDataObj['data']['totalPages'] > 1) {
+            console.log('Multiple pages is TRUE');
+            let allPages = [];
+
+            for (let i = 1; i <= (axiesDataObj['data']['totalPages'] - 1); i++) {
+                allPages.push(axios.get(URLaxies + '&offset=' + i * 12));
+            }
+            await axios.all(allPages)
+                .then(allPagesObj => {
+                    console.log(allPagesObj);
+                    allPagesObj.forEach(singlePageObj => {
+                        console.log(singlePageObj);
+                        singlePageObj['data']['axies'].forEach(singleAxie => {
+                            axiesDataArr.push(singleAxie);
+                        })
+                    })
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+        let axiesImages = await paintAxies();
+        for (let i = 0; i < axiesDataArr.length; i++) {
+            axiesDataArr[i]['img'] = axiesImages[i];
+        }
+        resolve('Promise done!');
+    });
+    return promise;
+}
+
+function loadAxiesExtendedData() {
+    let promise = new Promise(async function (resolve, reject) {
+        console.log('loadAxiesExtendedData called');
+        let extendedData_MovesStats = await getMovesStats();
+        //let extendedData_pendingEXP = getpendingEXP();
+        for (let i = 0; i < axiesDataArr.length; i++) {
+            axiesDataArr[i]['parts']['stats'] = {
+                'accuracy': extendedData_MovesStats[i]['accuracy'],
+                'attack': extendedData_MovesStats[i]['attack'],
+                'defense': extendedData_MovesStats[i]['defense'],
+                'effects': extendedData_MovesStats[i]['effects']
+            }
+        }
+        resolve('Promise done!');
+    });
+    return promise;
 }
 
 async function paintAxies() {
@@ -48,8 +107,8 @@ async function paintAxies() {
 }
 
 function getBodyParts() {
-    const URL = 'https://axieinfinity.com/api/body-parts';
-    axios.get(URL)
+    const URLparts = 'https://axieinfinity.com/api/body-parts';
+    axios.get(URLparts)
         .then((response) => {
             return response;
         })
@@ -121,9 +180,31 @@ function moveAxieClassToParentElement() {
     })
 }
 
-function requestBattleTeams() {
-    const BASE_URL = 'https://axieinfinity.com/api/';
-    let offset = 0; // offset = page
-    let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
-    URL = BASE_URL + 'addresses/' + ethAddress + '/axies?stage=' + stage;
+function getBattleTeams() {
+    let promise = new Promise(function (resolve, reject) {
+        console.log('getBattleTeams called')
+        const BASE_URL = 'https://api.axieinfinity.com/v1/battle/teams/';
+        let offset = 0; // offset = page
+        let count = 9999; // Number of teams to load
+        let noLimit = '1'; // Bollean, 1 = no limit in the amount of teams to load
+        let URLteams = BASE_URL + '?address=' + ethAddress + '&offset=' + offset + '&count=' + count + '&no_limit=' + noLimit;
+        // example: https://api.axieinfinity.com/v1/battle/teams/?address=0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22&offset=0&count=9999&no_limit=true
+
+        axios.get(URLteams)
+            .then(response => {
+                battleTeams = response;
+                resolve('Promise done!');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    });
+    return promise;
+}
+
+function loadBattleTeams() {
+    let promise = new Promise(function (resolve, reject) {
+
+    });
+    return promise;
 }
