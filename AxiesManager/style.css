@@ -79,12 +79,12 @@ table.dataTable {
     }
 
     table.dataTable tbody tr.even:hover, table.dataTable tbody tr.odd:hover {
-        background-color: rgba(0, 0, 0, 0.10);
-    }
-
-    table.dataTable tbody tr.even {
         background-color: rgba(0, 0, 0, 0.01);
     }
+
+    /*table.dataTable tbody tr.even {
+        background-color: rgba(0, 0, 0, 0.01);
+    }*/
 
     table.dataTable tbody tr:last-child {
         text-align: left;
@@ -101,27 +101,27 @@ table.dataTable {
         }
 
         table.dataTable tbody td.beast {
-            background-color: rgba(255, 184, 18, 0.15);
+            background-color: rgba(255, 184, 18, 0.10);
         }
 
         table.dataTable tbody td.aquatic {
-            background-color: rgba(0, 184, 206, 0.15);
+            background-color: rgba(0, 184, 206, 0.10);
         }
 
         table.dataTable tbody td.plant {
-            background-color: rgba(108, 192, 0, 0.15);
+            background-color: rgba(108, 192, 0, 0.10);
         }
 
         table.dataTable tbody td.bird {
-            background-color: rgba(255, 139, 189, 0.15);
+            background-color: rgba(255, 139, 189, 0.10);
         }
 
         table.dataTable tbody td.bug {
-            background-color: rgba(255, 83, 65, 0.15);
+            background-color: rgba(255, 83, 65, 0.10);
         }
 
         table.dataTable tbody td.reptile {
-            background-color: rgba(200, 138, 224, 0.15);
+            background-color: rgba(200, 138, 224, 0.10);
         }
 
         table.dataTable tbody td.axieThumbnail {
