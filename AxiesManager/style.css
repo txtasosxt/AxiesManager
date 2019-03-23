@@ -23,16 +23,23 @@
     }
 
 .donation {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+    position: relative;
     font-size: 75%;
+    font-style: italic;
     text-align: right;
     padding-right: 8px;
+    display: block;
+    clear: both;
+    float: right;
 }
 
-span {
-    font-style: italic;
+.whatsNew {
+    position: relative;
+    font-size: 75%;
+    display: block;
+    float: right;
+    clear: both;
+    padding-right: 8px;
 }
 
 .axie {
@@ -214,3 +221,53 @@ table.dataTable {
                 border-radius: 5px;
             }
 /* End of table styling */
+
+/* abbreviation formating */
+abbr span, abbr div {
+    font-family: Calibri;
+}
+
+abbr {
+    cursor: help;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(0,0,0,0.4);
+    border-radius: 8px;
+}
+
+    abbr:hover {
+        background: rgba(0,0,0,0.1);
+    }
+
+div.tip {
+    display: inline-block !important;
+    margin: 0;
+    background: red;
+}
+
+abbr span {
+    position: absolute;
+    left: -250px;
+    width: 250px;
+    display: none;
+    z-index: 10;
+    padding: 2px 4px 0;
+    margin: 1.5em 0 0 8px;
+    max-width: 0px;
+    border: 1px solid #216300;
+    border-radius: 6px;
+    box-shadow: 2px 2px 4px rgba(33, 99, 0, 0.5);
+    background: linear-gradient(#fff, #d0d0d0);
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 2s linear, opacity 2s linear;
+    transition: visibility 2s linear, opacity 2s linear;
+}
+
+    abbr:hover span {
+        display: inline-block;
+        max-width: 400px;
+        visibility: visible;
+        opacity: 1;
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+    }

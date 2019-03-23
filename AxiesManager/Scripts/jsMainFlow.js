@@ -149,6 +149,16 @@ function loadDatatable() {
                     title: 'Team', className: 'axieBattleTeam', width: '100px',
                 },
                 {
+                    data: function (data, type, row) {
+                        if (data['exp'] >= data['expForBreeding']) {
+                            return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #216300; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                        } else {
+                            return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                        }
+                    },
+                    title: 'Breedable (Synced)', width: '70px', className: 'centerAligned'
+                },
+                {
                     data: 'birthDate', title: 'Birth Date (Local)', type: 'date',
                     className: 'date', width: 'auto', searchable: false,
                     render: function (data, type, row) {
