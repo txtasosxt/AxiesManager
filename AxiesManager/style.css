@@ -132,25 +132,29 @@ table.dataTable {
         }
 
         table.dataTable tbody td.axieThumbnail {
-            max-width: 170px;
+            max-width: 172px;
+            position: relative;
         }
 
-    table.dataTable tbody .axieThumbnail {
-        max-width: 150px;
-    }
-
-        table.dataTable tbody .axieThumbnail img {
-            max-width: 150px;
-        }
+            table.dataTable tbody td.axieThumbnail img {
+                position: relative;
+                max-width: 150px;
+                top: -5px;
+                height: 95px;
+                object-fit: cover;
+            }
 
     table.dataTable tbody td.axieThumbnail a {
         mix-blend-mode: multiply;
     }
 
     table.dataTable tbody td.axieThumbnail span {
-        font-weight: bold;
-        font-style: normal;
         display: block;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        font-weight: bold;
         text-align: center;
     }
 
