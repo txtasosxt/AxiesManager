@@ -179,7 +179,7 @@ function loadDatatable() {
                 {
                     data: function (data, type, row) {
                         if (data['exp'] >= data['expForBreeding']) {
-                            return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #216300; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                            return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #1a699c; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
                         } else {
                             return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
                         }

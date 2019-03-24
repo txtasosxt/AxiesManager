@@ -17,14 +17,14 @@
     height: 70px;
     background-color: #D0E4F5;
     margin-bottom: 30px;
-    border-bottom: #216300 double 5px;
+    border-bottom: #1a699c double 5px;
 }
 
-#siteHeader h1 {
-    margin: 0;
-    padding: 0 0 0 8px;
-    color: #216300;
-}
+    #siteHeader h1 {
+        margin: 0;
+        padding: 0 0 0 8px;
+        color: #1a699c;
+    }
 
 .donation {
     position: relative;
@@ -76,7 +76,7 @@ abbr span {
     padding: 2px 4px 0;
     margin: 1.5em 0 0 8px;
     max-width: 0px;
-    border: 1px solid #216300;
+    border: 1px solid #1a699c;
     border-radius: 6px;
     box-shadow: 2px 2px 4px rgba(33, 99, 0, 0.5);
     background: linear-gradient(#fff, #d0d0d0);
@@ -101,6 +101,7 @@ abbr:hover span {
     margin-bottom: 20px;
     float: left;
 }
+
     .controlPanel .breedingCalcContainer .explanation {
         font-style: italic;
         font-size: 13px;
@@ -108,10 +109,12 @@ abbr:hover span {
         display: block;
         clear: both;
     }
+
 .controlPanel .ethFieldContainer {
     display: block;
     clear: both;
 }
+
     .controlPanel .ethFieldContainer input#ethAddressInput {
         height: 28px;
         width: 350px;
@@ -122,6 +125,7 @@ abbr:hover span {
         border-radius: 4px;
         padding-left: 5px;
     }
+
     .controlPanel .ethFieldContainer button#loadAxiesBtn {
         height: 32px;
         font-size: 13px;
@@ -313,4 +317,7 @@ table.dataTable {
                 padding: 2px 8px;
                 border-radius: 5px;
             }
-/* End of table styling */
+    table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+        background-color: rgba(176, 190, 217, 0.5) !important;
+    }
+        /* End of table styling */
