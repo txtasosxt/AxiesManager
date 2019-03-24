@@ -4,6 +4,17 @@ let axiesDataArr = [];
 let battleTeams = {};
 let tableExists = 0; //Boolean, used to check if Table already exists
 
+// Initialise jQueryUI elements
+window.addEventListener('load', async function () {
+    $('button').button({
+        disabled: true,
+    });
+    $("#showDetailsCheck").checkboxradio({
+        disabled: true,
+    });
+    $('button#loadAxiesBtn').button('enable');
+})
+
 // Initialise MetaMask
 window.addEventListener('load', async function () {
     if (window.ethereum) {
@@ -42,8 +53,12 @@ function checkEthAddressChange() {
 
 // Gets the Ethereum address from MetaMask
 function updateEthAddress(address) {
+    if (address == null || address == undefined || address == '') {
+        alert('Please fill an Ethereum address!');
+        return;
+    }
     if (address !== undefined) {
-        ///clearInterval(intervalEthAddressCheck);
+        //clearInterval(intervalEthAddressCheck);
         ethAddress = address;
         $('#ethAddressInput').val(ethAddress);
         functionsFlow();
@@ -59,7 +74,7 @@ function updateEthAddress(address) {
                     if (ethAddress === undefined) {
                         console.log('No Ethereum address');
                     } else {
-                        document.getElementById('ethAddressField').innerHTML = result[0];
+                        document.getElementById('ethAddressInput').innerHTML = result[0];
                         functionsFlow();
                     };
                     return (ethAddress);
@@ -73,6 +88,8 @@ function updateEthAddress(address) {
 function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
+    $('button#breedingCalcBtn').button('enable');
+    $('#showDetailsCheck').checkboxradio('enable');
     // START of setting chained promises
     let promise1 = new Promise(function (resolve, reject) {
         requestAxies() // (1) Get the 1st page
@@ -111,14 +128,27 @@ function loadDatatable() {
         $('#axiesLoadingProgressBar').progressbar('destroy');
 
         $('#axiesTable').DataTable({
+            responsive: false,
             autoWidth: false,
             processing: true,
             order: [0, 'desc'],
             paging: true,
             pageLength: 100,
-            //deferRender: true,
-            //scrollY: 300,
-            scrollCollapse: true,
+            deferRender: false,
+            autoWidth: true,
+            fixedHeader: true,
+            select: {
+                style: 'multi'
+            },
+            /*scrollY: function () {
+                let siteHeaderHeight = $('#siteHeader').outerHeight(true);
+                let controlPanelHeight = $('.controlPanel').outerHeight(true);
+                let dataTablesInfoHeight = 40;
+                let dataTablesHead = 65;
+                return window.innerHeight - (siteHeaderHeight + controlPanelHeight + dataTablesInfoHeight + dataTablesHead + 50);
+            },
+            scroller: true,
+            scrollCollapse: false,*/
             //scrollX: true,
             data: axiesDataArr,
             columns: [
@@ -129,8 +159,9 @@ function loadDatatable() {
                     title: 'ID', className: 'axieThumbnail', width: '135px',
                 },
                 { data: 'name', title: 'Name', width: '132px', className: 'centerAligned' },
-                { data: 'class', title: 'Class', width: '55px' },
+                { data: 'class', title: 'Class', width: '65px' },
                 { data: 'stats.hp', title: 'HP', width: '55px', className: 'centerAligned' },
+                { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
                 { data: 'stats.speed', title: 'Speed', width: '55px', className: 'centerAligned' },
                 { data: 'stats.skill', title: 'Skill', width: '55px', className: 'centerAligned' },
                 { data: 'stats.morale', title: 'Morale', width: '55px', className: 'centerAligned' },
@@ -141,7 +172,6 @@ function loadDatatable() {
                     },
                     title: 'Average Accuracy', width: '55px', className: 'centerAligned'
                 },
-                { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
                 {
                     data: function (data, type, row) {
                         return '<a style="display: block;" href="https://axieinfinity.com/team/' + data['battleTeam']['teamID'] + '" target="_blank">' + data['battleTeam']['name'] + '</a>';
@@ -167,14 +197,14 @@ function loadDatatable() {
                         var pubDate = new Date((timestamp + offset) * 1000).toLocaleString();
                         return pubDate;
                     }
-                }
+                },
             ],
-
 
             // Run the following when the datatable initialization is completed
             initComplete: () => {
                 addTableSearchFields();
                 moveAxieClassToParentElement();
+                rowSelector()
                 tableExists = 1;
             }
         });

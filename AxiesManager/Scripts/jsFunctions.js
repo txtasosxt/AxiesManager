@@ -1,4 +1,5 @@
 ﻿let URLaxies
+let rowSelections = []
 
 function loadingScreenInit() {
     // Setting up the "loader" popup
@@ -13,7 +14,7 @@ function loadingScreenInit() {
     $("#axiesLoadingProgressBar").progressbar({ value: false });
     $('#loader p').text('Calling out all Axies...');
     $('#pageReloadWarning').css('display', 'inline');
-    $('button#testBtn').css('display', 'none');
+    $('button#loadAxiesBtn').css('display', 'none');
     $('input#ethAddressInput').addClass('input-disabled');
     $('input#ethAddressInput').attr('readonly', true);
 }
@@ -125,16 +126,16 @@ function getBodyParts() {
 function addTableSearchFields() {
     // Capturing the table before the insertion of the search fields in the header
     var table = $('#axiesTable').DataTable();
-
+    
     // Setup - Add a text input before each header cell
-    $('#axiesTable thead tr').before('<tr role="row" id="headerFilters"></tr>');
+    $('table.dataTable thead tr').first().before('<tr role="row" class="headerFilters"></tr>');
     $('#axiesTable thead th').each(function () {
-        var title = $(this).text();
-        $('<th><input id="searchField' + title + '" type="text" class="columnSearchField" placeholder="Search ' + title + '" /></th>').appendTo('#headerFilters');
+        var title = $(this).text().replace(/\s/g, '');
+        $('<th class="columnSearchField searchField' + title + '"><input class="" type="text" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
     });
 
     // Apply the search on 'keyup'
-    let filterInputSelected = $('input', table.column(0).header().parentElement.previousSibling.firstChild);
+    let filterInputSelected = $('.headerFilters th input').first()
     table.columns().every(function () {
         var that = this; //that = the 'this column'
 
@@ -146,6 +147,48 @@ function addTableSearchFields() {
             }
         });
         filterInputSelected = $(filterInputSelected).parent().next().find('input');
+    });
+
+    // The following works without internal table scrolling
+    /*
+    $('#axiesTable thead tr').before('<tr role="row" id="headerFilters"></tr>');
+    $('#axiesTable thead th').each(function () {
+        var title = $(this).text();
+        $('<th><input type="text" class="columnSearchField" placeholder="Search ' + title + '" /></th>').appendTo('#headerFilters');
+    });
+
+    // Apply the search on 'keyup'
+    let filterInputSelected = $('#headerFilters th input').first()
+    table.columns().every(function () {
+        var that = this; //that = the 'this column'
+
+        filterInputSelected.on('keyup change', function () {
+            if (that.search() !== this.value) {
+                that
+                    .search(this.value)
+                    .draw()
+            }
+        });
+        filterInputSelected = $(filterInputSelected).parent().next().find('input');
+    });*/
+}
+
+// Checks if more than 2 rows have been selected and diselects the first one 
+function rowSelector() {
+    let table = $('#axiesTable').DataTable();
+
+    table.on('select', function (event, dt, type, sel) {
+        if (rowSelections.length == 2) {
+            dt.rows(rowSelections[0]).deselect()
+        }
+        rowSelections.push(sel[0])
+    });
+
+    table.on('deselect', function (event, dt, type, sel) {
+        let index = rowSelections.indexOf(sel[0]);
+        if (index !== -1) {
+            rowSelections.splice(index, 1);
+        }
     });
 }
 
@@ -238,4 +281,18 @@ function loadBattleTeams() {
         resolve('Promise done!');
     });
     return promise;
+}
+
+function openBreedingCalc() {
+    let table = $('#axiesTable').DataTable();
+    let axie1 = table.rows(rowSelections).data()[0]['id'];
+    let axie2 = table.rows(rowSelections).data()[1]['id'];
+    let showDetails = ''
+    if (document.getElementById("showDetailsCheck").checked == true) {
+        showDetails = '&showDetails=true'
+    }
+    else {
+        showDetails = ''
+    }
+    window.open('https://freakitties.github.io/axie/calc.html?sireId=' + axie1 + '&matronId=' + axie2 + showDetails, '_blank');
 }

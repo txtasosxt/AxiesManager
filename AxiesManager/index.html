@@ -17,7 +17,7 @@
     <script type="text/javascript" src="Scripts/jsMainFlow.js"></script>
 </head>
 <body>
-    <div class="siteHeader">
+    <div id="siteHeader">
         <div style="position: absolute;top: 0px;left: 0px; line-height: 70px;">
             <h1>Axies Collection Manager</h1>
         </div>
@@ -25,22 +25,41 @@
             <span>Encouragement Address (ETH)</span><br />
             <span>0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22</span>
         </div>
-        <div class="whatsNew"><p><abbr>What's new<span>
-            <b>Updates Log</b><br>
-            <b>23/03/2019</b> | Added a row for breedable Axies
-        </span></abbr></div>
+        <div class="whatsNew">
+            <p>
+                <abbr>
+                    What's new<span>
+    <b>Updates Log</b>
+    <br>==================<br>
+    <b>25/03/2019</b> | Added the function to quickly open Freak's breeding calculator
+    <br>-----<br>
+    <b>24/03/2019</b> | Reduced row height, fixed the header into position while scrolling and overall "quality of life" improvements! (I always wanted to say that!)
+    <br>-----<br>
+    <b>23/03/2019</b> | Added a row for breedable Axies
+</span>
+                </abbr>
+        </div>
     </div>
 
     <div class="bodyContainer">
         <div id="mainContainer">
-            <input style="width:350px" id="ethAddressInput" placeholder="Ethereum Address" />
-            <button type="button" id="testBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
-            <p id="pageReloadWarning">Please reload the page in order to search a new address... for now! I'll fix this in the future I promise!</p>
-
-            <p id="ethAddressField"></p>
-            <div id="loader" title="Loading Status">
-                <p></p>
-                <div id="axiesLoadingProgressBar"></div>
+            <div class="controlPanel">
+                <div class="breedingCalcContainer">
+                    <button type="button" style="display: inline-block;float: left;" id="breedingCalcBtn" onclick="openBreedingCalc()">Breeding Calculator</button>
+                    <label style="font-size: 12px;display: inline-block;float: left;" for="showDetailsCheck">
+                        <input type="checkbox" name="showDetailsCheck" id="showDetailsCheck">
+                        Show part details in the calculator?
+                    </label>
+                </div>
+                <div class="ethFieldContainer">
+                    <input id="ethAddressInput" placeholder="Ethereum Address" />
+                    <button type="button" id="loadAxiesBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
+                    <p id="pageReloadWarning">Please reload the page in order to search a new address... for now! I'll fix this in the future I promise!</p>
+                </div>
+                <div id="loader" title="Loading Status">
+                    <p></p>
+                    <div id="axiesLoadingProgressBar"></div>
+                </div>
             </div>
             <table class="dataTable row-border" id="axiesTable">
                 <thead>
@@ -49,12 +68,12 @@
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Name</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Class</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">HP</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Defense</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Speed</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Skill</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Morale</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Attack</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Average Accuracy</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Defense</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Breedable</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Team</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Birth Date (Local)</th>
