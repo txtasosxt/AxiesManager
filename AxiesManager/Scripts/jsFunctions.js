@@ -148,48 +148,6 @@ function addTableSearchFields() {
         });
         filterInputSelected = $(filterInputSelected).parent().next().find('input');
     });
-
-    // The following works without internal table scrolling
-    /*
-    $('#axiesTable thead tr').before('<tr role="row" id="headerFilters"></tr>');
-    $('#axiesTable thead th').each(function () {
-        var title = $(this).text();
-        $('<th><input type="text" class="columnSearchField" placeholder="Search ' + title + '" /></th>').appendTo('#headerFilters');
-    });
-
-    // Apply the search on 'keyup'
-    let filterInputSelected = $('#headerFilters th input').first()
-    table.columns().every(function () {
-        var that = this; //that = the 'this column'
-
-        filterInputSelected.on('keyup change', function () {
-            if (that.search() !== this.value) {
-                that
-                    .search(this.value)
-                    .draw()
-            }
-        });
-        filterInputSelected = $(filterInputSelected).parent().next().find('input');
-    });*/
-}
-
-// Checks if more than 2 rows have been selected and diselects the first one 
-function rowSelector() {
-    let table = $('#axiesTable').DataTable();
-
-    table.on('select', function (event, dt, type, sel) {
-        if (rowSelections.length == 2) {
-            dt.rows(rowSelections[0]).deselect()
-        }
-        rowSelections.push(sel[0])
-    });
-
-    table.on('deselect', function (event, dt, type, sel) {
-        let index = rowSelections.indexOf(sel[0]);
-        if (index !== -1) {
-            rowSelections.splice(index, 1);
-        }
-    });
 }
 
 function getMovesStats() {
@@ -283,16 +241,43 @@ function loadBattleTeams() {
     return promise;
 }
 
+// Checks if more than 2 rows have been selected and diselects the first one 
+function rowSelector() {
+    let table = $('#axiesTable').DataTable();
+
+    table.on('select', function (event, dt, type, sel) {
+        if (rowSelections.length == 2) {
+            dt.rows(rowSelections[0]).deselect()
+        }
+        rowSelections.push(sel[0])
+        if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
+            $('button#breedingCalcBtn').button('enable');
+            $('#showDetailsCheck').checkboxradio('enable');
+        }
+    });
+
+    table.on('deselect', function (event, dt, type, sel) {
+        let index = rowSelections.indexOf(sel[0]);
+        if (index !== -1) {
+            rowSelections.splice(index, 1);
+        }
+        if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
+            $('button#breedingCalcBtn').button('disable');
+            $('#showDetailsCheck').checkboxradio('disable');
+        }
+    });
+}
+
 function openBreedingCalc() {
     let table = $('#axiesTable').DataTable();
     let axie1 = table.rows(rowSelections).data()[0]['id'];
-    let axie2 = table.rows(rowSelections).data()[1]['id'];
-    let showDetails = ''
-    if (document.getElementById("showDetailsCheck").checked == true) {
-        showDetails = '&showDetails=true'
+    let axie2 = ''
+    if (table.rows(rowSelections).data().length > 1) {
+        axie2 = table.rows(rowSelections).data()[1]['id']
     }
-    else {
-        showDetails = ''
+    let showDetails = ''
+    if ($('#showDetailsCheck').prop('checked') == true) {
+        showDetails = '&showDetails=true'
     }
     window.open('https://freakitties.github.io/axie/calc.html?sireId=' + axie1 + '&matronId=' + axie2 + showDetails, '_blank');
 }

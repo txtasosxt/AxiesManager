@@ -88,8 +88,6 @@ function updateEthAddress(address) {
 function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
-    $('button#breedingCalcBtn').button('enable');
-    $('#showDetailsCheck').checkboxradio('enable');
     // START of setting chained promises
     let promise1 = new Promise(function (resolve, reject) {
         requestAxies() // (1) Get the 1st page

@@ -16,7 +16,7 @@
     width: 100%;
     height: 70px;
     background-color: #D0E4F5;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border-bottom: #216300 double 5px;
 }
 
@@ -101,6 +101,13 @@ abbr:hover span {
     margin-bottom: 20px;
     float: left;
 }
+    .controlPanel .breedingCalcContainer .explanation {
+        font-style: italic;
+        font-size: 13px;
+        float: left;
+        display: block;
+        clear: both;
+    }
 .controlPanel .ethFieldContainer {
     display: block;
     clear: both;
@@ -120,6 +127,7 @@ abbr:hover span {
         font-size: 13px;
         padding: 5px;
     }
+
 
 #loader {
     display: block;
