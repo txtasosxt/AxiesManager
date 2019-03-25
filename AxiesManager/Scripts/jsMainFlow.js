@@ -170,7 +170,7 @@ function loadDatatable() {
                         }
                         return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a><span>${data['id']}</span>`;
                     },
-                    title: 'ID', className: 'axieThumbnail', width: '135px',
+                    title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
                 { data: 'name', title: 'Name', width: '132px', className: 'centerAligned' },
                 { data: 'class', title: 'Class', width: '65px' },
