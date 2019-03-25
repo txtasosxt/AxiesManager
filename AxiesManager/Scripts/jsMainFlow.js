@@ -13,6 +13,13 @@ window.addEventListener('load', async function () {
         disabled: true,
     });
     $('button#loadAxiesBtn').button('enable');
+    $.widget("ui.tooltip", $.ui.tooltip, {
+        options: {
+            content: function () {
+                return $(this).prop('title');
+            }
+        }
+    });
 })
 
 // Initialise MetaMask
@@ -152,7 +159,16 @@ function loadDatatable() {
             columns: [
                 {
                     data: function (data, type, row) {
-                        return '<a class=' + data['class'] + ' style="display: block;" href="https://axieinfinity.com/axie/' + data['id'] + '" target="_blank"><img style="display: block;" width="150" src="' + data['img'] + '" /></a><span>' + data['id'] + '</span>';
+                        let effectsDescr = 'No effects';
+                        if (data['parts']['stats']['effects'].length > 0) {
+                            effectsDescr = '';
+                            data['parts']['stats']['effects'].forEach(element => {
+                                effectsDescr += element + '<br/>- - - - -<br/>';
+                                console.log(effectsDescr)
+                            })
+                            effectsDescr = effectsDescr.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                        }
+                        return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a><span>${data['id']}</span>`;
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px',
                 },
@@ -202,7 +218,8 @@ function loadDatatable() {
             initComplete: () => {
                 addTableSearchFields();
                 moveAxieClassToParentElement();
-                rowSelector()
+                rowSelector();
+                enablePartsEffectsTooltips();
                 tableExists = 1;
             }
         });

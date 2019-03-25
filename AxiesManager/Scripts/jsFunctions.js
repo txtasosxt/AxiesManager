@@ -1,6 +1,13 @@
 ﻿let URLaxies
 let rowSelections = []
 
+const capitalize = function(string) {
+    if (typeof string !== 'string') {
+        return '';
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function loadingScreenInit() {
     // Setting up the "loader" popup
     $('#loader').dialog({
@@ -85,7 +92,10 @@ function loadAxiesExtendedData() {
                 'accuracy': extendedData_MovesStats[i]['accuracy'],
                 'attack': extendedData_MovesStats[i]['attack'],
                 'defense': extendedData_MovesStats[i]['defense'],
-                'effects': extendedData_MovesStats[i]['effects']
+                'effects': extendedData_MovesStats[i]['effects'],
+                'attackBeastBug': extendedData_MovesStats[i]['attackBeastBug'],
+                'attackPlantReptile': extendedData_MovesStats[i]['attackPlantReptile'],
+                'attackAquaticBird': extendedData_MovesStats[i]['attackAquaticBird'],
             }
         }
         resolve('Promise done!');
@@ -155,7 +165,7 @@ function getMovesStats() {
     let attackPartsCount = [];
     for (let i = 0; i < axiesDataArr.length; i++) {
         extendedData_MovesStats.push({
-            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': []
+            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0
         })
         attackPartsCount.push(0);
         let parts = axiesDataArr[i]['parts'];
@@ -165,10 +175,20 @@ function getMovesStats() {
                     attackPartsCount[i]++;
                     extendedData_MovesStats[i]['accuracy'] += parts[i2]['moves'][0]['accuracy'];
                     extendedData_MovesStats[i]['attack'] += parts[i2]['moves'][0]['attack'];
+                    if (parts[i2]['class'] == 'beast' || parts[i2]['class'] == 'bug') {
+                        extendedData_MovesStats[i]['attackBeastBug'] += parts[i2]['moves'][0]['attack'];
+                    } else if (parts[i2]['class'] == 'plant' || parts[i2]['class'] == 'reptile') {
+                        extendedData_MovesStats[i]['attackPlantReptile'] += parts[i2]['moves'][0]['attack'];
+                    } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
+                        extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
+                    }
                 }
                 extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
                 if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
-                    extendedData_MovesStats[i]['effects'].push(parts[i2]['moves'][0]['effects'][0]['description']);
+                    let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
+                    let effectPart = capitalize(parts[i2]['type']);
+                    let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
+                    extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
                 }
             }
         }
@@ -228,10 +248,6 @@ function loadBattleTeams() {
                         if (elementLVL1['name'] == 0) {
                             axiesDataArr[i]['battleTeam']['name'] = 'Unnamed Team'
                         }
-                        console.log('Team Name: ' + elementLVL1['name'])
-                        console.log('Team ID: ' + elementLVL1['teamId'])
-                        console.log('Axie ID: ' + axiesDataArr[i]['id'])
-                        console.log('-------------')
                     }
                 })
             })
@@ -280,4 +296,24 @@ function openBreedingCalc() {
         showDetails = '&showDetails=true'
     }
     window.open('https://freakitties.github.io/axie/calc.html?sireId=' + axie1 + '&matronId=' + axie2 + showDetails, '_blank');
+}
+
+function enablePartsEffectsTooltips() {
+    $(".movesEffectsTooltip").tooltip({
+        show: {
+            effect: "slideDown",
+            duration: 200
+        },
+        hide: {
+            effect: "slideUp",
+            delay: 200,
+            duration: 200
+        },
+        position: {
+            my: "right-7 top-4"
+        },
+        classes: {
+            "ui-tooltip": "tooltipWindow"
+        }
+    });
 }
