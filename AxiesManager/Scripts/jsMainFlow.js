@@ -164,7 +164,6 @@ function loadDatatable() {
                             effectsDescr = '';
                             data['parts']['stats']['effects'].forEach(element => {
                                 effectsDescr += element + '<br/>- - - - -<br/>';
-                                console.log(effectsDescr)
                             })
                             effectsDescr = effectsDescr.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
                         }
@@ -213,7 +212,11 @@ function loadDatatable() {
                     }
                 },
             ],
-
+            columnDefs: [
+                {
+                    orderSequence: ['desc', 'asc'], targets: ['_all']
+                }
+            ],
             // Run the following when the datatable initialization is completed
             initComplete: () => {
                 addTableSearchFields();
