@@ -158,12 +158,6 @@ abbr:hover span {
     width: fit-content;
 }
 
-    .dataTables_wrapper #axiesTable_filter {
-        position: absolute;
-        top: -25px;
-        right: 17px;
-    }
-
 /* Start of table styling */
 table.dataTable {
     border: 1px solid #1C6EA4;
