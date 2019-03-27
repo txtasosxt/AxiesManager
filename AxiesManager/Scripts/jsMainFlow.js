@@ -135,11 +135,11 @@ function loadDatatable() {
         $('#axiesTable').DataTable({
             responsive: false,
             autoWidth: false,
-            processing: true,
+            processing: false,
             order: [0, 'desc'],
             paging: true,
             pageLength: 100,
-            deferRender: false,
+            deferRender: true,
             autoWidth: true,
             fixedHeader: true,
             select: {
@@ -160,6 +160,9 @@ function loadDatatable() {
                 {
                     data: function (data, type, row) {
                         let effectsDescr = 'No effects';
+                        if (type === 'sort') {
+                            return data['id'];
+                        }
                         if (data['parts']['stats']['effects'].length > 0) {
                             effectsDescr = '';
                             data['parts']['stats']['effects'].forEach(element => {
@@ -167,7 +170,7 @@ function loadDatatable() {
                             })
                             effectsDescr = effectsDescr.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
                         }
-                        return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a><span>${data['id']}</span>`;
+                        return `<span>${data['id']}</span><a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a>`;
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
