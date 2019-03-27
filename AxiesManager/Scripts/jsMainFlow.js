@@ -133,6 +133,8 @@ function loadDatatable() {
         $('#axiesLoadingProgressBar').progressbar('destroy');
 
         $('#axiesTable').DataTable({
+            serverSide: false,
+            searchDelay: 350,
             responsive: false,
             autoWidth: false,
             processing: false,
@@ -160,7 +162,7 @@ function loadDatatable() {
                 {
                     data: function (data, type, row) {
                         let effectsDescr = 'No effects';
-                        if (type === 'sort') {
+                        if (type === 'sort' || type === 'filter') {
                             return data['id'];
                         }
                         if (data['parts']['stats']['effects'].length > 0) {

@@ -141,7 +141,7 @@ function addTableSearchFields() {
     $('table.dataTable thead tr').first().before('<tr role="row" class="headerFilters"></tr>');
     $('#axiesTable thead th').each(function () {
         var title = $(this).text().replace(/\s/g, '');
-        $('<th class="columnSearchField searchField' + title + '"><input class="" type="text" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
+        $('<th class="columnSearchField searchField' + title + '"><input class="" type="search" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
     });
 
     // Apply the search on 'keyup'
@@ -149,8 +149,8 @@ function addTableSearchFields() {
     table.columns().every(function () {
         var that = this; //that = the 'this column'
 
-        filterInputSelected.on('keyup change', function () {
-            if (that.search() !== this.value) {
+        filterInputSelected.on('keyup change', function (key) {
+            if (key.keyCode === 13 && that.search() !== this.value) {
                 that
                     .search(this.value)
                     .draw()
@@ -265,24 +265,27 @@ function rowSelector() {
     let table = $('#axiesTable').DataTable();
 
     table.on('select', function (event, dt, type, sel) {
-        if (rowSelections.length == 2) {
-            dt.rows(rowSelections[0]).deselect()
-        }
-        rowSelections.push(sel[0])
-        if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
-            $('button#breedingCalcBtn').button('enable');
-            $('#showDetailsCheck').checkboxradio('enable');
+        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
+            if (rowSelections.length == 2) {
+                dt.rows(rowSelections[0]).deselect()
+            }
+            rowSelections.push(sel[0])
+            if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
+                $('button#breedingCalcBtn').button('enable');
+                $('#showDetailsCheck').checkboxradio('enable');
+            }
         }
     });
-
     table.on('deselect', function (event, dt, type, sel) {
-        let index = rowSelections.indexOf(sel[0]);
-        if (index !== -1) {
-            rowSelections.splice(index, 1);
-        }
-        if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
-            $('button#breedingCalcBtn').button('disable');
-            $('#showDetailsCheck').checkboxradio('disable');
+        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
+            let index = rowSelections.indexOf(sel[0]);
+            if (index !== -1) {
+                rowSelections.splice(index, 1);
+            }
+            if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
+                $('button#breedingCalcBtn').button('disable');
+                $('#showDetailsCheck').checkboxradio('disable');
+            }
         }
     });
 }
