@@ -187,7 +187,11 @@ function loadDatatable() {
                 },
                 {
                     data: function (data, type, row) {
-                        return '<a style="display: block;" href="https://axieinfinity.com/team/' + data['battleTeam']['teamID'] + '" target="_blank">' + data['battleTeam']['name'] + '</a>';
+                        let teamsList = ''; // String
+                        for (i = 0; i < data['battleTeam'].length; i++) {
+                            teamsList += '<a style="display: block;" href="https://axieinfinity.com/team/' + data['battleTeam'][i]['teamID'] + '" target="_blank">' + data['battleTeam'][i]['name'] + '</a>'
+                        }
+                        return teamsList;
                     },
                     title: 'Team', className: 'axieBattleTeam', width: '100px',
                 },

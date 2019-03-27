@@ -232,25 +232,28 @@ function loadBattleTeams() {
         console.log('loadBattleTeams called');
 
         for (let i = 0; i < axiesDataArr.length; i++) {
-            axiesDataArr[i]['battleTeam'] = {
-                name: 'None',
-                teamID: '',
-                axieTeamPosition: null
-            },
+            axiesDataArr[i]['battleTeam'] = []
             battleTeams['data']['teams'].forEach(elementLVL1 => {
                 elementLVL1['teamMembers'].forEach(elementLVL2 => {
                     if (elementLVL2['axieId'] == axiesDataArr[i]['id']) {
-                        axiesDataArr[i]['battleTeam'] = {
+                        axiesDataArr[i]['battleTeam'].push({
                             name: elementLVL1['name'],
                             teamID: elementLVL1['teamId'],
                             axieTeamPosition: elementLVL2['position']
-                        }
+                        })
                         if (elementLVL1['name'] == 0) {
                             axiesDataArr[i]['battleTeam']['name'] = 'Unnamed Team'
                         }
                     }
                 })
             })
+            if (axiesDataArr[i]['battleTeam'].length == 0) {
+                axiesDataArr[i]['battleTeam'].push({
+                    name: 'None',
+                    teamID: '',
+                    axieTeamPosition: null
+                });
+            }
         }
         resolve('Promise done!');
     });
