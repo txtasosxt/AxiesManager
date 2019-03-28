@@ -134,7 +134,6 @@ function loadDatatable() {
 
         $('#axiesTable').DataTable({
             serverSide: false,
-            searchDelay: 350,
             responsive: false,
             autoWidth: false,
             processing: false,
@@ -145,7 +144,8 @@ function loadDatatable() {
             autoWidth: true,
             fixedHeader: true,
             select: {
-                style: 'multi'
+                style: 'multi',
+                selector: 'td:not(:first-child)'
             },
             /*scrollY: function () {
                 let siteHeaderHeight = $('#siteHeader').outerHeight(true);
@@ -172,7 +172,7 @@ function loadDatatable() {
                             })
                             effectsDescr = effectsDescr.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
                         }
-                        return `<span>${data['id']}</span><a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a>`;
+                        return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a><span>${data['id']}</span>`;
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
