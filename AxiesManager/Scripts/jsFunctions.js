@@ -150,7 +150,7 @@ function addTableSearchFields() {
         var that = this; //that = the 'this column'
 
         filterInputSelected.on('keyup change', function (key) {
-            if (key.keyCode === 13 && that.search() !== this.value) {
+            if (that.search() !== this.value) {
                 that
                     .search(this.value)
                     .draw()
