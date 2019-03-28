@@ -145,7 +145,7 @@ function loadDatatable() {
             fixedHeader: true,
             select: {
                 style: 'multi',
-                selector: 'td:not(:first-child)'
+                selector: 'td:not(:first-child):not(.axieBattleTeam)'
             },
             /*scrollY: function () {
                 let siteHeaderHeight = $('#siteHeader').outerHeight(true);
@@ -198,7 +198,7 @@ function loadDatatable() {
                         }
                         return teamsList;
                     },
-                    title: 'Team', className: 'axieBattleTeam', width: '100px',
+                    title: 'Teams', className: 'axieBattleTeam', width: '180px',
                 },
                 {
                     data: function (data, type, row) {
@@ -232,6 +232,7 @@ function loadDatatable() {
                 moveAxieClassToParentElement();
                 rowSelector();
                 enablePartsEffectsTooltips();
+                $('#axiesTable tbody td a:contains("[NONE]")').parent().addClass('noTeam');
                 tableExists = 1;
             }
         });

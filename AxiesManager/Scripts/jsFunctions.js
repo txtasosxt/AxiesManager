@@ -1,5 +1,6 @@
-﻿let URLaxies
-let rowSelections = []
+﻿let URLaxies;
+let rowSelections = [];
+let test = [];
 
 const capitalize = function(string) {
     if (typeof string !== 'string') {
@@ -232,24 +233,24 @@ function loadBattleTeams() {
         console.log('loadBattleTeams called');
 
         for (let i = 0; i < axiesDataArr.length; i++) {
-            axiesDataArr[i]['battleTeam'] = []
+            axiesDataArr[i]['battleTeam'] = [];
             battleTeams['data']['teams'].forEach(elementLVL1 => {
                 elementLVL1['teamMembers'].forEach(elementLVL2 => {
                     if (elementLVL2['axieId'] == axiesDataArr[i]['id']) {
+                        if (elementLVL1['name'] == '') {
+                            elementLVL1['name'] = 'Unnamed Team'
+                        }
                         axiesDataArr[i]['battleTeam'].push({
                             name: elementLVL1['name'],
                             teamID: elementLVL1['teamId'],
                             axieTeamPosition: elementLVL2['position']
                         })
-                        if (elementLVL1['name'] == 0) {
-                            axiesDataArr[i]['battleTeam']['name'] = 'Unnamed Team'
-                        }
                     }
                 })
             })
             if (axiesDataArr[i]['battleTeam'].length == 0) {
                 axiesDataArr[i]['battleTeam'].push({
-                    name: 'None',
+                    name: '[NONE]',
                     teamID: '',
                     axieTeamPosition: null
                 });
