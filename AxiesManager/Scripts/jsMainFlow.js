@@ -176,7 +176,7 @@ function loadDatatable() {
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
-                { data: 'name', title: 'Name', width: '132px', className: 'centerAligned' },
+                { data: 'name', title: 'Name', width: '132px', className:'centerAligned' },
                 { data: 'class', title: 'Class', width: '65px', className: 'axieClass' },
                 { data: 'stats.hp', title: 'HP', width: '55px', className: 'centerAligned' },
                 { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
