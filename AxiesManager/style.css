@@ -3,9 +3,29 @@
     font-size: small;
     margin: 0;
 }
+a {
+    color: inherit;
+}
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+a:focus {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover, a:active {
+    text-decoration: none;
+    color: inherit
+}
 
 .bodyContainer {
     margin: 8px;
+    clear: both;
 }
 
     .bodyContainer .controlPanel {
@@ -14,23 +34,24 @@
 
 #siteHeader {
     display: block;
+    float: left;
     width: 100%;
-    height: 70px;
+    min-height: 75px;
     background-color: #D0E4F5;
     margin-bottom: 30px;
     border-bottom: #1a699c double 5px;
 }
 
     #siteHeader h1 {
-        margin: 0;
-        padding: 0 0 0 8px;
+        margin: 10px;
         color: #1a699c;
+        line-height: 1em;
     }
 
     #siteHeader > div {
         position: relative;
         top: 0;
-        margin-left: 10px;
+        margin-left: 40px;
         float: right;
     }
 
@@ -42,6 +63,10 @@
         padding-right: 8px;
         display: block;
         clear: both;
+        float: right;
+    }
+
+    #siteHeader .donation span {
         float: right;
     }
 
