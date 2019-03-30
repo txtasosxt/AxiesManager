@@ -1,7 +1,7 @@
 ﻿body {
     font-family: 'Segoe UI', sans-serif;
     font-size: small;
-    margin: 0px;
+    margin: 0;
 }
 
 .bodyContainer {
@@ -27,16 +27,23 @@
         color: #1a699c;
     }
 
-.donation {
-    position: relative;
-    font-size: 0.85em;
-    font-style: italic;
-    text-align: right;
-    padding-right: 8px;
-    display: block;
-    clear: both;
-    float: right;
-}
+    #siteHeader > div {
+        position: relative;
+        top: 0;
+        margin-left: 10px;
+        float: right;
+    }
+
+    #siteHeader .donation {
+        position: relative;
+        font-size: 0.85em;
+        font-style: italic;
+        text-align: right;
+        padding-right: 8px;
+        display: block;
+        clear: both;
+        float: right;
+    }
 
 .whatsNew {
     position: relative;
@@ -54,48 +61,47 @@ abbr span, abbr div {
 abbr {
     cursor: help;
     text-decoration: none;
+    border-bottom: 1px dotted #eaeaea;
     border-bottom: 1px dotted rgba(0,0,0,0.4);
     border-radius: 8px;
 }
 
     abbr:hover {
+        background: #eaeaea;
         background: rgba(0,0,0,0.1);
     }
 
-div.tip {
-    display: inline-block !important;
-    margin: 0;
-    background: red;
-}
+    abbr span {
+        position: absolute;
+        left: -350px;
+        width: 350px;
+        display: none;
+        z-index: 10;
+        padding: 2px 4px 0;
+        margin: 1.5em 0 0 8px;
+        max-width: 0;
+        border: 1px solid #1a699c;
+        border-radius: 6px;
+        box-shadow: 2px 2px 4px rgba(33, 99, 0, 0.5);
+        background: linear-gradient(#fff, #d0d0d0);
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: visibility 2s linear, opacity 2s linear;
+        -moz-transition: visibility 2s linear, opacity 2s linear;
+        -o-transition: visibility 2s linear, opacity 2s linear;
+        transition: visibility 2s linear, opacity 2s linear;
+    }
 
-abbr span {
-    position: absolute;
-    left: -350px;
-    width: 350px;
-    display: none;
-    z-index: 10;
-    padding: 2px 4px 0;
-    margin: 1.5em 0 0 8px;
-    max-width: 0px;
-    border: 1px solid #1a699c;
-    border-radius: 6px;
-    box-shadow: 2px 2px 4px rgba(33, 99, 0, 0.5);
-    background: linear-gradient(#fff, #d0d0d0);
-    visibility: hidden;
-    opacity: 0;
-    -webkit-transition: visibility 2s linear, opacity 2s linear;
-    transition: visibility 2s linear, opacity 2s linear;
-}
-
-abbr:hover span {
-    display: inline-block;
-    max-width: 400px;
-    visibility: visible;
-    opacity: 1;
-    -webkit-transition-delay: 0s;
-    -o-transition-delay: 0;
-    transition-delay: 0s;
-}
+    abbr:hover span {
+        display: inline-block;
+        max-width: 400px;
+        visibility: visible;
+        opacity: 1;
+        -webkit-transition-delay: 0s;
+        -moz-transition-delay: 0s;
+        -o-transition-delay: 0;
+        transition-delay: 0s;
+    }
 /* END of abbreviation formating */
 
 .controlPanel .breedingCalcContainer {
@@ -117,7 +123,7 @@ abbr:hover span {
     clear: both;
 }
 
-    .controlPanel .ethFieldContainer input#ethAddressInput {
+    .controlPanel .ethFieldContainer #ethAddressInput {
         height: 28px;
         width: 350px;
         font-size: 13px;
@@ -129,7 +135,7 @@ abbr:hover span {
         float: left;
     }
 
-    .controlPanel .ethFieldContainer button#loadAxiesBtn {
+    .controlPanel .ethFieldContainer #loadAxiesBtn {
         height: 32px;
         font-size: 13px;
         padding: 5px;
@@ -137,14 +143,14 @@ abbr:hover span {
         margin-left: 8px;
     }
 
-.breedingCalcContainer button#breedingCalcBtn {
-    display: inline-block;
+.breedingCalcContainer #breedingCalcBtn {
+    display: block;
     float: left;
     margin-right: 8px;
 }
 .breedingCalcContainer label {
     font-size: 12px;
-    display: inline-block;
+    display: block;
     float: left;
 }
 
@@ -169,8 +175,10 @@ abbr:hover span {
 }
 
 .dataTables_wrapper {
-    width: max-content;
-    width: fit-content;
+    width: auto;
+    /*width: max-content;
+    width: fit-content;*/
+    float: left;
 }
 
 /* Start of table styling */
@@ -187,7 +195,8 @@ table.dataTable {
         padding: 3px 2px;
     }
 
-    table.dataTable tbody tr.even:hover, table.dataTable tbody tr.odd:hover {
+    table.dataTable tbody tr:hover {
+        background-color: #eaeaea;
         background-color: rgba(0, 0, 0, 0.01);
     }
 
@@ -200,80 +209,81 @@ table.dataTable {
     }
 
     table.dataTable tbody td {
-        padding: 0px 10px !important;
+        padding: 0 10px !important;
         font-size: 16px;
 
     }
-    table.dataTable tbody td.axieClass {
+    table.dataTable tbody .axieClass {
         text-transform: capitalize;
     }
 
-    table.dataTable tbody td.axieBattleTeam {
+    table.dataTable tbody .axieBattleTeam {
         font-size: 14px;
     }
 
-        table.dataTable tbody td.noTeam {
-            background-color: rgba(255, 0, 0, 0.30);
-        }
+    table.dataTable tbody .noTeam {
+        background-color: #ffaeae;
+        background-color: rgba(255, 0, 0, 0.30);
+    }
 
-table.dataTable tbody td.centerAligned {
+table.dataTable tbody .centerAligned {
     text-align: center;
 }
 
-        table.dataTable tbody td.beast {
-            background-color: rgba(255, 184, 18, 0.10);
-        }
+    table.dataTable tbody .beast {
+        background-color: #fff8e7;
+    }
 
-        table.dataTable tbody td.aquatic {
-            background-color: rgba(0, 184, 206, 0.10);
-        }
+    table.dataTable tbody .aquatic {
+        background-color: #e5f8fa;
+    }
 
-        table.dataTable tbody td.plant {
-            background-color: rgba(108, 192, 0, 0.10);
-        }
+    table.dataTable tbody .plant {
+        background-color: #f0f9e5;
+    }
 
-        table.dataTable tbody td.bird {
-            background-color: rgba(255, 139, 189, 0.10);
-        }
+    table.dataTable tbody .bird {
+        background-color: #fff3f8;
+    }
 
-        table.dataTable tbody td.bug {
-            background-color: rgba(255, 83, 65, 0.10);
-        }
+    table.dataTable tbody .bug {
+        background-color: #ffedec;
+    }
 
-        table.dataTable tbody td.reptile {
-            background-color: rgba(200, 138, 224, 0.10);
-        }
+    table.dataTable tbody .reptile {
+        background-color: #f9f3fc;
+    }
 
-        table.dataTable tbody td.axieThumbnail {
-            max-width: 172px;
+    table.dataTable tbody .axieThumbnail {
+        max-width: 172px;
+        position: relative;
+    }
+
+        table.dataTable tbody .axieThumbnail img {
             position: relative;
+            max-width: 150px;
+            top: -5px;
+            height: 95px;
+            object-fit: cover;
         }
 
-            table.dataTable tbody td.axieThumbnail img {
-                position: relative;
-                max-width: 150px;
-                top: -5px;
-                height: 95px;
-                object-fit: cover;
-            }
+        table.dataTable tbody td.axieThumbnail a {
+            mix-blend-mode: multiply;
+        }
 
-    table.dataTable tbody td.axieThumbnail a {
-        mix-blend-mode: multiply;
-    }
+        table.dataTable tbody td.axieThumbnail span {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            font-weight: bold;
+            text-align: center;
+        }
 
-    table.dataTable tbody td.axieThumbnail span {
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    table .dataTable tbody td.axieThumbnail a {
-        display: block;
-    }
+        table .dataTable tbody td.axieThumbnail a {
+            display: block;
+        }
 
         table.dataTable tbody td.axieThumbnail a:hover {
             filter: grayscale(75%);
@@ -282,7 +292,9 @@ table.dataTable tbody td.centerAligned {
     table.dataTable thead, .headerFilters {
         background: #1C6EA4;
         background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-gradient(linear, top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -o-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         border-bottom: 2px solid #444444;
     }
@@ -291,7 +303,7 @@ table.dataTable tbody td.centerAligned {
             display: block;
             font-size: 11px;
             width: 100%;
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         table.dataTable thead th {
@@ -303,7 +315,7 @@ table.dataTable tbody td.centerAligned {
             padding: 10px 6px !important;
         }
 
-            table.dataTable thead th input#searchFieldThumbnail {
+            table.dataTable thead th #searchFieldThumbnail {
                 visibility: hidden;
             }
 
@@ -317,7 +329,9 @@ table.dataTable tbody td.centerAligned {
         color: #FFFFFF;
         background: #D0E4F5;
         background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -webkit-gradient(linear, top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
         background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -o-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
         background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
         border-top: 2px solid #444444;
     }
@@ -337,7 +351,8 @@ table.dataTable tbody td.centerAligned {
                 padding: 2px 8px;
                 border-radius: 5px;
             }
-    table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+    table.dataTable tbody > .selected {
+        background-color: #cfd9e6;
         background-color: rgba(176, 190, 217, 0.5) !important;
     }
 
