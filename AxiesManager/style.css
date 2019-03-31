@@ -30,6 +30,7 @@ a:hover, a:active {
 
     .bodyContainer .controlPanel {
         margin-bottom: 25px;
+        float: left;
     }
 
 #siteHeader {
@@ -191,6 +192,7 @@ abbr {
     display: none;
     font-size: 0.90em;
     font-style: italic;
+    margin-left: 10px;
 }
 
 .input-disabled {
@@ -201,8 +203,8 @@ abbr {
 
 .dataTables_wrapper {
     width: auto;
-    /*width: max-content;
-    width: fit-content;*/
+    width: max-content;
+    width: fit-content;
     float: left;
 }
 
@@ -236,11 +238,32 @@ table.dataTable {
     table.dataTable tbody td {
         padding: 0 10px !important;
         font-size: 16px;
+    }
 
+    table.dataTable tbody .attackSum {
+        position: relative;
     }
-    table.dataTable tbody .axieClass {
-        text-transform: capitalize;
+
+        table.dataTable tbody .attackSum span {
+            position: absolute;
+            display: block;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid #AAA;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+    .attackBarsContainer {
+        display: block;
+        z-index: -1;
     }
+
+table .dataTable tbody .axieClass {
+    text-transform: capitalize;
+}
 
     table.dataTable tbody .axieBattleTeam {
         font-size: 14px;
@@ -384,8 +407,8 @@ table.dataTable tbody .centerAligned {
     table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
         background-position: top right !important;
     }
-/* End of table styling */
 
+/* End of table styling */
 .tooltipWindow {
     font-size: 0.85em !important;
 }

@@ -183,7 +183,16 @@ function loadDatatable() {
                 { data: 'stats.speed', title: 'Speed', width: '55px', className: 'centerAligned' },
                 { data: 'stats.skill', title: 'Skill', width: '55px', className: 'centerAligned' },
                 { data: 'stats.morale', title: 'Morale', width: '55px', className: 'centerAligned' },
-                { data: 'parts.stats.attack', title: 'Total Attack', width: '55px', className: 'centerAligned' },
+                {
+                    data: function (data, type, row) {
+                        console.log(type);
+                        if (type === 'sort' || type === 'filter' || type === 'type') {
+                            return data['parts']['stats']['attack'];
+                        }
+                        return `<span>${data['parts']['stats']['attack']}</span> <div class='attackBarsContainer'><canvas class="classAttackBar" width="200" height="75" data-beast_bug="${data['parts']['stats']['attackBeastBug']}" data-plant_reptile="${data['parts']['stats']['attackPlantReptile']}" data-aquatic_bird="${data['parts']['stats']['attackAquaticBird'] }"></canvas><div>`;
+                    },
+                    title: 'Total Attack', width: '55px', className: 'centerAligned attackSum'
+                },
                 {
                     data: function (data, type, row) {
                         return Math.round(data['parts']['stats']['accuracy']) + ' %';
@@ -233,6 +242,7 @@ function loadDatatable() {
                 rowSelector();
                 enablePartsEffectsTooltips();
                 $('#axiesTable tbody td a:contains("[NONE]")').parent().addClass('noTeam');
+                attackBarsInit();
                 tableExists = 1;
             }
         });

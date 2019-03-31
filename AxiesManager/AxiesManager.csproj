@@ -70,10 +70,12 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Dependencies\Chart.min.js" />
     <Content Include="Dependencies\DataTables\Buttons-1.5.6\css\common.scss" />
     <Content Include="Dependencies\DataTables\Buttons-1.5.6\css\mixins.scss" />
     <Content Include="Dependencies\jquery-ui-DotLuv\package.json" />
     <Content Include="Scripts\app.js.map" />
+    <Content Include="package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
