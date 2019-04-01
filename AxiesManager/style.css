@@ -254,6 +254,8 @@ table.dataTable {
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
+            border-radius: 30%;
+            padding: 8px;
         }
 
     .attackBarsContainer {
