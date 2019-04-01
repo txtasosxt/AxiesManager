@@ -66,7 +66,17 @@
                 </div>
                 <div class="ethFieldContainer">
                     <input id="ethAddressInput" placeholder="Ethereum Address" />
-                    <button type="button" id="loadAxiesBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
+                    <div id="loadAxiesBtnContainer">
+                        <button type="button" id="loadAxiesBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
+                        <div id="loadAxiesCheckboxesContainer">
+                            <label for="checkbox-filter-adult">Adult<input checked type="checkbox" class="axieStageCheckbox" name="checkbox-filter-adult" id="checkbox-filter-adult">
+                            </label>
+                            <label for="checkbox-filter-petite">Petite<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-petite" id="checkbox-filter-petite">
+                            </label>
+                            <label for="checkbox-filter-lavra">Lavra<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-lavra" id="checkbox-filter-lavra">
+                            </label>
+                        </div>
+                    </div>
                     <p id="pageReloadWarning">Please reload the page in order to search a new address... for now! I'll fix this in the future I promise!</p>
                 </div>
                 <div id="loader" title="Loading Status">

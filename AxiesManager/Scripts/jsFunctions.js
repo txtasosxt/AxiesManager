@@ -22,7 +22,7 @@ function loadingScreenInit() {
     $("#axiesLoadingProgressBar").progressbar({ value: false });
     $('#loader p').text('Calling out all Axies...');
     $('#pageReloadWarning').css('display', 'inline');
-    $('button#loadAxiesBtn').css('display', 'none');
+    $('#loadAxiesBtnContainer').css('display', 'none');
     $('input#ethAddressInput').addClass('input-disabled');
     $('input#ethAddressInput').attr('readonly', true);
 }
@@ -31,7 +31,27 @@ function loadingScreenInit() {
 function requestAxies() {
     const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = page
-    let stage = '4'; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+    let stage; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+    let ampersandRequired = false;
+    if ($("#checkbox-filter-adult").is(':checked')) {
+        stage = '4';
+        ampersandRequired = true;
+    }
+    if ($("#checkbox-filter-petite").is(':checked')) {
+        if (ampersandRequired) {
+            stage += '&stage='
+        }
+        stage += '3';
+        ampersandRequired = true;
+    }
+    if ($("#checkbox-filter-lavra").is(':checked')) {
+        if (ampersandRequired) {
+            stage += '&stage='
+        }
+        stage += '2';
+        ampersandRequired = true;
+    }
+    console.log(stage);
     URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
     // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 

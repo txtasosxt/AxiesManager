@@ -169,11 +169,20 @@ abbr {
         margin-left: 8px;
     }
 
+    .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer {
+        float: left;
+    }
+        .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer label {
+            font-size: 0.9em;
+            padding: 0.2em 0.5em;
+        }
+
 .breedingCalcContainer #breedingCalcBtn {
     display: block;
     float: left;
     margin-right: 8px;
 }
+
 .breedingCalcContainer label {
     font-size: 12px;
     display: block;

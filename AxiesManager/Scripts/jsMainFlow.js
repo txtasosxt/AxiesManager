@@ -20,6 +20,9 @@ window.addEventListener('load', async function () {
             }
         }
     });
+    $("#loadAxiesBtnContainer input").checkboxradio({
+        icon: false
+    });
 })
 
 // Initialise MetaMask
@@ -185,7 +188,6 @@ function loadDatatable() {
                 { data: 'stats.morale', title: 'Morale', width: '55px', className: 'centerAligned' },
                 {
                     data: function (data, type, row) {
-                        console.log(type);
                         if (type === 'sort' || type === 'filter' || type === 'type') {
                             return data['parts']['stats']['attack'];
                         }
