@@ -2,32 +2,7 @@
 let rowSelections = [];
 let test = [];
 
-const capitalize = function(string) {
-    if (typeof string !== 'string') {
-        return '';
-    }
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function loadingScreenInit() {
-    // Setting up the "loader" popup
-    $('#loader').dialog({
-        modal: true,
-        resizable: false,
-        draggable: false,
-        minWidth: 400,
-        show: { effect: 'puff' },
-        hide: { effect: 'explode', duration: 1000 }
-    });
-    $("#axiesLoadingProgressBar").progressbar({ value: false });
-    $('#loader p').text('Calling out all Axies...');
-    $('#pageReloadWarning').css('display', 'inline');
-    $('#loadAxiesBtnContainer').css('display', 'none');
-    $('input#ethAddressInput').addClass('input-disabled');
-    $('input#ethAddressInput').attr('readonly', true);
-}
-
-// Request Axie Infinity API for Axies list
+//// Axie Data [START] ////
 function requestAxies() {
     const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = page
@@ -117,11 +92,50 @@ function loadAxiesExtendedData() {
                 'attackBeastBug': extendedData_MovesStats[i]['attackBeastBug'],
                 'attackPlantReptile': extendedData_MovesStats[i]['attackPlantReptile'],
                 'attackAquaticBird': extendedData_MovesStats[i]['attackAquaticBird'],
+                'attackScore': extendedData_MovesStats[i]['attackScore']
             }
         }
         resolve('Promise done!');
     });
     return promise;
+}
+
+function getMovesStats() {
+    let extendedData_MovesStats = [];
+    let attackPartsCount = [];
+    for (let i = 0; i < axiesDataArr.length; i++) {
+        extendedData_MovesStats.push({
+            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0, 'attackScore': 0
+        })
+        attackPartsCount.push(0);
+        let parts = axiesDataArr[i]['parts'];
+        for (let i2 = 0; i2 < parts.length; i2++) {
+            if (parts[i2]['moves'][0] !== undefined) {
+                if (parts[i2]['moves'][0]['attack'] > 0) {
+                    attackPartsCount[i]++;
+                    extendedData_MovesStats[i]['accuracy'] += parts[i2]['moves'][0]['accuracy'];
+                    extendedData_MovesStats[i]['attack'] += parts[i2]['moves'][0]['attack'];
+                    if (parts[i2]['class'] == 'beast' || parts[i2]['class'] == 'bug') {
+                        extendedData_MovesStats[i]['attackBeastBug'] += parts[i2]['moves'][0]['attack'];
+                    } else if (parts[i2]['class'] == 'plant' || parts[i2]['class'] == 'reptile') {
+                        extendedData_MovesStats[i]['attackPlantReptile'] += parts[i2]['moves'][0]['attack'];
+                    } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
+                        extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
+                    }
+                    extendedData_MovesStats[i]['attackScore'] += calculateTrueAttack(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy'])
+                }
+                extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
+                if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
+                    let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
+                    let effectPart = capitalize(parts[i2]['type']);
+                    let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
+                    extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
+                }
+            }
+        }
+        extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
+    }
+    return extendedData_MovesStats;
 }
 
 async function paintAxies() {
@@ -143,6 +157,7 @@ async function paintAxies() {
     return axiesImagesURL;
 }
 
+// Not used yet
 function getBodyParts() {
     const URLparts = 'https://axieinfinity.com/api/body-parts';
     axios.get(URLparts)
@@ -153,79 +168,10 @@ function getBodyParts() {
             console.log(error);
         });
 }
+//// Axie Data [END] ////
 
-function addTableSearchFields() {
-    // Capturing the table before the insertion of the search fields in the header
-    var table = $('#axiesTable').DataTable();
-    
-    // Setup - Add a text input before each header cell
-    $('table.dataTable thead tr').first().before('<tr role="row" class="headerFilters"></tr>');
-    $('#axiesTable thead th').each(function () {
-        var title = $(this).text().replace(/\s/g, '');
-        $('<th class="columnSearchField searchField' + title + '"><input class="" type="search" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
-    });
 
-    // Apply the search on 'keyup'
-    let filterInputSelected = $('.headerFilters th input').first()
-    table.columns().every(function () {
-        var that = this; //that = the 'this column'
-
-        filterInputSelected.on('keyup change', function (key) {
-            if (that.search() !== this.value) {
-                that
-                    .search(this.value)
-                    .draw()
-            }
-        });
-        filterInputSelected = $(filterInputSelected).parent().next().find('input');
-    });
-}
-
-function getMovesStats() {
-    let extendedData_MovesStats = [];
-    let attackPartsCount = [];
-    for (let i = 0; i < axiesDataArr.length; i++) {
-        extendedData_MovesStats.push({
-            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0
-        })
-        attackPartsCount.push(0);
-        let parts = axiesDataArr[i]['parts'];
-        for (let i2 = 0; i2 < parts.length; i2++) {
-            if (parts[i2]['moves'][0] !== undefined) {
-                if (parts[i2]['moves'][0]['attack'] > 0) {
-                    attackPartsCount[i]++;
-                    extendedData_MovesStats[i]['accuracy'] += parts[i2]['moves'][0]['accuracy'];
-                    extendedData_MovesStats[i]['attack'] += parts[i2]['moves'][0]['attack'];
-                    if (parts[i2]['class'] == 'beast' || parts[i2]['class'] == 'bug') {
-                        extendedData_MovesStats[i]['attackBeastBug'] += parts[i2]['moves'][0]['attack'];
-                    } else if (parts[i2]['class'] == 'plant' || parts[i2]['class'] == 'reptile') {
-                        extendedData_MovesStats[i]['attackPlantReptile'] += parts[i2]['moves'][0]['attack'];
-                    } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
-                        extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
-                    }
-                }
-                extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
-                if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
-                    let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
-                    let effectPart = capitalize(parts[i2]['type']);
-                    let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
-                    extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
-                }
-            }
-        }
-        extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
-    }
-    return extendedData_MovesStats;
-}
-
-function moveAxieClassToParentElement() {
-    $('#axiesTable td a').each(function (elemClass) {
-        elemClass = $(this).attr('class');
-        $(this).removeClass(elemClass)
-        $(this).parent().addClass(elemClass);
-    })
-}
-
+//// Team Data [START] ////
 function getBattleTeams() {
     let promise = new Promise(function (resolve, reject) {
         console.log('getBattleTeams called')
@@ -249,7 +195,7 @@ function getBattleTeams() {
 }
 
 function loadBattleTeams() {
-    let promise = new Promise(function (resolve, reject) {     
+    let promise = new Promise(function (resolve, reject) {
         console.log('loadBattleTeams called');
 
         for (let i = 0; i < axiesDataArr.length; i++) {
@@ -280,37 +226,28 @@ function loadBattleTeams() {
     });
     return promise;
 }
+//// Team Data [END] ////
 
-// Checks if more than 2 rows have been selected and diselects the first one 
-function rowSelector() {
-    let table = $('#axiesTable').DataTable();
 
-    table.on('select', function (event, dt, type, sel) {
-        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
-            if (rowSelections.length == 2) {
-                dt.rows(rowSelections[0]).deselect()
-            }
-            rowSelections.push(sel[0])
-            if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
-                $('button#breedingCalcBtn').button('enable');
-                $('#showDetailsCheck').checkboxradio('enable');
-            }
-        }
-    });
-    table.on('deselect', function (event, dt, type, sel) {
-        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
-            let index = rowSelections.indexOf(sel[0]);
-            if (index !== -1) {
-                rowSelections.splice(index, 1);
-            }
-            if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
-                $('button#breedingCalcBtn').button('disable');
-                $('#showDetailsCheck').checkboxradio('disable');
-            }
-        }
-    });
+//// Data Formating and Tool Functions [START] ////
+function capitalize(string) {
+    if (typeof string !== 'string') {
+        return '';
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function calculateTrueAttack(axSkill, axMorale, moveAtk, moveAcc) {
+    let acc = (axSkill * 0.333 + moveAcc) / 100;
+    let trAt = moveAtk * acc;
+    let crCh = axMorale * 0.5 / 100;
+    let crAt = trAt * crCh;
+    return Math.round((trAt + crAt) * 100);
+}
+//// Data Formating and Tool Functions [END] ////
+
+
+//// Links & Redirections [START] ////
 function openBreedingCalc() {
     let table = $('#axiesTable').DataTable();
     let axie1 = table.rows(rowSelections).data()[0]['id'];
@@ -323,6 +260,62 @@ function openBreedingCalc() {
         showDetails = '&showDetails=true'
     }
     window.open('https://freakitties.github.io/axie/calc.html?sireId=' + axie1 + '&matronId=' + axie2 + showDetails, '_blank');
+}
+//// Links & Redirections [END] ////
+
+
+//// DOM Formating and jQuery UI [START] ////
+function loadingScreenInit() {
+    // Setting up the "loader" popup
+    $('#loader').dialog({
+        modal: true,
+        resizable: false,
+        draggable: false,
+        minWidth: 400,
+        show: { effect: 'puff' },
+        hide: { effect: 'explode', duration: 1000 }
+    });
+    $("#axiesLoadingProgressBar").progressbar({ value: false });
+    $('#loader p').text('Calling out all Axies...');
+    $('#pageReloadWarning').css('display', 'inline');
+    $('#loadAxiesBtnContainer').css('display', 'none');
+    $('input#ethAddressInput').addClass('input-disabled');
+    $('input#ethAddressInput').attr('readonly', true);
+}
+
+function addTableSearchFields() {
+    // Capturing the table before the insertion of the search fields in the header
+    var table = $('#axiesTable').DataTable();
+
+    // Setup - Add a text input before each header cell
+    $('table.dataTable thead tr').first().before('<tr role="row" class="headerFilters"></tr>');
+    $('#axiesTable thead th').each(function () {
+        var title = $(this).text().replace(/\s/g, '');
+        $('<th class="columnSearchField searchField' + title + '"><input class="" type="search" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
+    });
+
+    // Apply the search on 'keyup'
+    let filterInputSelected = $('.headerFilters th input').first()
+    table.columns().every(function () {
+        var that = this; //that = the 'this column'
+
+        filterInputSelected.on('keyup change', function (key) {
+            if (that.search() !== this.value) {
+                that
+                    .search(this.value)
+                    .draw()
+            }
+        });
+        filterInputSelected = $(filterInputSelected).parent().next().find('input');
+    });
+}
+
+function moveAxieClassToParentElement() {
+    $('#axiesTable td a').each(function (elemClass) {
+        elemClass = $(this).attr('class');
+        $(this).removeClass(elemClass)
+        $(this).parent().addClass(elemClass);
+    })
 }
 
 function enablePartsEffectsTooltips() {
@@ -409,3 +402,34 @@ function attackBarsInit() {
         });
     }
 }
+
+// Checks if more than 2 rows have been selected and diselects the first one 
+function rowSelector() {
+    let table = $('#axiesTable').DataTable();
+
+    table.on('select', function (event, dt, type, sel) {
+        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
+            if (rowSelections.length == 2) {
+                dt.rows(rowSelections[0]).deselect()
+            }
+            rowSelections.push(sel[0])
+            if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
+                $('button#breedingCalcBtn').button('enable');
+                $('#showDetailsCheck').checkboxradio('enable');
+            }
+        }
+    });
+    table.on('deselect', function (event, dt, type, sel) {
+        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
+            let index = rowSelections.indexOf(sel[0]);
+            if (index !== -1) {
+                rowSelections.splice(index, 1);
+            }
+            if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
+                $('button#breedingCalcBtn').button('disable');
+                $('#showDetailsCheck').checkboxradio('disable');
+            }
+        }
+    });
+}
+//// DOM Formating and jQuery UI [END] ////
