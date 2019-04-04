@@ -179,7 +179,7 @@ function loadDatatable() {
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
-                { data: 'name', title: 'Name', width: '132px', className:'centerAligned' },
+                { data: 'name', title: 'Name', width: '170px', className:'centerAligned' },
                 { data: 'class', title: 'Class', width: '65px', className: 'axieClass' },
                 { data: 'stats.hp', title: 'HP', width: '55px', className: 'centerAligned' },
                 { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
@@ -204,6 +204,9 @@ function loadDatatable() {
                 },
                 {
                     data: function (data, type, row) {
+                        if (data['stage'] == 2) {
+                            return '<span style="font-style:italic">Not an adult</span>';
+                        }
                         let teamsList = ''; // String
                         for (i = 0; i < data['battleTeam'].length; i++) {
                             teamsList += '<a style="display: block;" href="https://axieinfinity.com/team/' + data['battleTeam'][i]['teamID'] + '" target="_blank">' + data['battleTeam'][i]['name'] + '</a>'
@@ -214,13 +217,26 @@ function loadDatatable() {
                 },
                 {
                     data: function (data, type, row) {
-                        if (data['exp'] >= data['expForBreeding']) {
-                            return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #1a699c; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                        let birthTimestamp = data['birthDate'];
+                        let nowTimestamp = Math.floor(Date.now() / 1000)
+                        let twoDays = 172800;
+                        let fourDays = twoDays * 2;
+
+                        if (data['stage'] == 4) {
+                            if (data['exp'] >= data['expForBreeding']) {
+                                return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #1a699c; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                            } else {
+                                return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                            }
+                        } else if (data['stage'] == 3 && nowTimestamp - fourDays >= birthTimestamp ) {
+                            return 'Ready to become adult!'
+                        } else if (data['stage'] == 2 && nowTimestamp - twoDays >= birthTimestamp ) {
+                            return 'Ready to become petite!'
                         } else {
-                            return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                            return 'Underaged!';
                         }
                     },
-                    title: 'Breedable (Synced)', width: '70px', className: 'centerAligned'
+                    title: 'Breedable (Synced)', width: '70px', className: 'centerAligned expStatus'
                 },
                 {
                     data: 'birthDate', title: 'Birth Date (Local)', type: 'date',
@@ -244,6 +260,7 @@ function loadDatatable() {
                 moveAxieClassToParentElement();
                 enablePartsEffectsTooltips();
                 $('#axiesTable tbody td a:contains("[NONE]")').parent().addClass('noTeam');
+                $('#axiesTable tbody td.expStatus:contains("Ready to become")').addClass('readyToMorph');
                 attackBarsInit();
                 rowSelector();
                 tableExists = 1;

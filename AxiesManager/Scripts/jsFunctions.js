@@ -84,15 +84,36 @@ function loadAxiesExtendedData() {
         let extendedData_MovesStats = await getMovesStats();
         //let extendedData_pendingEXP = getpendingEXP();
         for (let i = 0; i < axiesDataArr.length; i++) {
-            axiesDataArr[i]['parts']['stats'] = {
-                'accuracy': extendedData_MovesStats[i]['accuracy'],
-                'attack': extendedData_MovesStats[i]['attack'],
-                'defense': extendedData_MovesStats[i]['defense'],
-                'effects': extendedData_MovesStats[i]['effects'],
-                'attackBeastBug': extendedData_MovesStats[i]['attackBeastBug'],
-                'attackPlantReptile': extendedData_MovesStats[i]['attackPlantReptile'],
-                'attackAquaticBird': extendedData_MovesStats[i]['attackAquaticBird'],
-                'attackScore': extendedData_MovesStats[i]['attackScore']
+            if (axiesDataArr[i]['stage'] == 2) {
+                axiesDataArr[i]['parts'] = {
+                    'stats': {
+                        'accuracy': 0,
+                        'attack': 0,
+                        'defense': 0,
+                        'effects': 0,
+                        'attackBeastBug': 0,
+                        'attackPlantReptile': 0,
+                        'attackAquaticBird': 0,
+                        'attackScore': 0
+                    }
+                };
+                axiesDataArr[i]['stats'] = {
+                    'hp': 0,
+                    'morale': 0,
+                    'skill': 0,
+                    'speed': 0
+                }
+            } else {
+                axiesDataArr[i]['parts']['stats'] = {
+                    'accuracy': extendedData_MovesStats[i]['accuracy'],
+                    'attack': extendedData_MovesStats[i]['attack'],
+                    'defense': extendedData_MovesStats[i]['defense'],
+                    'effects': extendedData_MovesStats[i]['effects'],
+                    'attackBeastBug': extendedData_MovesStats[i]['attackBeastBug'],
+                    'attackPlantReptile': extendedData_MovesStats[i]['attackPlantReptile'],
+                    'attackAquaticBird': extendedData_MovesStats[i]['attackAquaticBird'],
+                    'attackScore': extendedData_MovesStats[i]['attackScore']
+                }
             }
         }
         resolve('Promise done!');
@@ -108,32 +129,36 @@ function getMovesStats() {
             'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0, 'attackScore': 0
         })
         attackPartsCount.push(0);
-        let parts = axiesDataArr[i]['parts'];
-        for (let i2 = 0; i2 < parts.length; i2++) {
-            if (parts[i2]['moves'][0] !== undefined) {
-                if (parts[i2]['moves'][0]['attack'] > 0) {
-                    attackPartsCount[i]++;
-                    extendedData_MovesStats[i]['accuracy'] += parts[i2]['moves'][0]['accuracy'];
-                    extendedData_MovesStats[i]['attack'] += parts[i2]['moves'][0]['attack'];
-                    if (parts[i2]['class'] == 'beast' || parts[i2]['class'] == 'bug') {
-                        extendedData_MovesStats[i]['attackBeastBug'] += parts[i2]['moves'][0]['attack'];
-                    } else if (parts[i2]['class'] == 'plant' || parts[i2]['class'] == 'reptile') {
-                        extendedData_MovesStats[i]['attackPlantReptile'] += parts[i2]['moves'][0]['attack'];
-                    } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
-                        extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
+        if (axiesDataArr[i]['stage'] == 2) {
+            continue;
+        } else {
+            let parts = axiesDataArr[i]['parts'];
+            for (let i2 = 0; i2 < parts.length; i2++) {
+                if (parts[i2]['moves'][0] !== undefined) {
+                    if (parts[i2]['moves'][0]['attack'] > 0) {
+                        attackPartsCount[i]++;
+                        extendedData_MovesStats[i]['accuracy'] += parts[i2]['moves'][0]['accuracy'];
+                        extendedData_MovesStats[i]['attack'] += parts[i2]['moves'][0]['attack'];
+                        if (parts[i2]['class'] == 'beast' || parts[i2]['class'] == 'bug') {
+                            extendedData_MovesStats[i]['attackBeastBug'] += parts[i2]['moves'][0]['attack'];
+                        } else if (parts[i2]['class'] == 'plant' || parts[i2]['class'] == 'reptile') {
+                            extendedData_MovesStats[i]['attackPlantReptile'] += parts[i2]['moves'][0]['attack'];
+                        } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
+                            extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
+                        }
+                        extendedData_MovesStats[i]['attackScore'] += calculateTrueAttack(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy'])
                     }
-                    extendedData_MovesStats[i]['attackScore'] += calculateTrueAttack(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy'])
-                }
-                extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
-                if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
-                    let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
-                    let effectPart = capitalize(parts[i2]['type']);
-                    let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
-                    extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
+                    extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
+                    if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
+                        let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
+                        let effectPart = capitalize(parts[i2]['type']);
+                        let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
+                        extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
+                    }
                 }
             }
+            extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
         }
-        extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
     }
     return extendedData_MovesStats;
 }
@@ -229,7 +254,7 @@ function loadBattleTeams() {
 //// Team Data [END] ////
 
 
-//// Data Formating and Tool Functions [START] ////
+//// Data Formating and Manipulation Functions [START] ////
 function capitalize(string) {
     if (typeof string !== 'string') {
         return '';
@@ -244,7 +269,19 @@ function calculateTrueAttack(axSkill, axMorale, moveAtk, moveAcc) {
     let crAt = trAt * crCh;
     return Math.round((trAt + crAt) * 100);
 }
-//// Data Formating and Tool Functions [END] ////
+//// Data Formating and Manipulation Functions [END] ////
+
+
+//// Prices and Marketplace [START] ////
+function axieValueCalculator(axie, attackRating, defenceRating) {
+    let valueRating = 0;
+    let expMdf = 0.1;
+    let atkRatingMdf = 1;
+    let defRatingMdf = 1;
+
+    return valueRating;
+}
+//// Prices and Marketplace [END] ////
 
 
 //// Links & Redirections [START] ////

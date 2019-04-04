@@ -252,7 +252,6 @@ table.dataTable {
     table.dataTable tbody .attackSum {
         position: relative;
     }
-
         table.dataTable tbody .attackSum span {
             position: absolute;
             display: block;
@@ -272,52 +271,48 @@ table.dataTable {
         z-index: -1;
     }
 
-table .dataTable tbody .axieClass {
+.dataTable tbody td.axieClass {
     text-transform: capitalize;
 }
 
-    table.dataTable tbody .axieBattleTeam {
-        font-size: 14px;
+.dataTable tbody .axieBattleTeam {
+    font-size: 14px;
+}
+    .dataTable tbody .noTeam {
+        background-color: #ffaeae;
+        background-color: rgba(255, 0, 0, 0.3);
     }
 
-    table.dataTable tbody .noTeam {
-        background-color: #ffaeae;
-        background-color: rgba(255, 0, 0, 0.30);
-    }
+table.dataTable tbody .readyToMorph {
+    background-color: #aeffae;
+    background-color: rgba(0, 255, 0, 0.3);
+}
 
 table.dataTable tbody .centerAligned {
     text-align: center;
 }
-
     table.dataTable tbody .beast {
         background-color: #fff8e7;
     }
-
     table.dataTable tbody .aquatic {
         background-color: #e5f8fa;
     }
-
     table.dataTable tbody .plant {
         background-color: #f0f9e5;
     }
-
     table.dataTable tbody .bird {
         background-color: #fff3f8;
     }
-
     table.dataTable tbody .bug {
         background-color: #ffedec;
     }
-
     table.dataTable tbody .reptile {
         background-color: #f9f3fc;
     }
-
     table.dataTable tbody .axieThumbnail {
         max-width: 172px;
         position: relative;
     }
-
         table.dataTable tbody .axieThumbnail img {
             position: relative;
             max-width: 150px;
@@ -325,11 +320,9 @@ table.dataTable tbody .centerAligned {
             height: 95px;
             object-fit: cover;
         }
-
         table.dataTable tbody td.axieThumbnail a {
             mix-blend-mode: multiply;
         }
-
         table.dataTable tbody td.axieThumbnail span {
             display: block;
             position: absolute;
@@ -339,11 +332,9 @@ table.dataTable tbody .centerAligned {
             font-weight: bold;
             text-align: center;
         }
-
         table .dataTable tbody td.axieThumbnail a {
             display: block;
         }
-
         table.dataTable tbody td.axieThumbnail a:hover {
             filter: grayscale(75%);
         }
@@ -357,14 +348,12 @@ table.dataTable tbody .centerAligned {
         background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         border-bottom: 2px solid #444444;
     }
-
         table.dataTable thead tr.headerFilters input {
             display: block;
             font-size: 11px;
             width: 100%;
             box-sizing: border-box;
         }
-
         table.dataTable thead th {
             display: table-cell;
             font-size: 15px;
@@ -373,36 +362,31 @@ table.dataTable tbody .centerAligned {
             border-left: 2px solid #D0E4F5;
             padding: 10px 6px !important;
         }
-
-            table.dataTable thead th #searchFieldThumbnail {
-                visibility: hidden;
+            table.dataTable thead .searchFieldName {
+                min-width:150px;
+            }
+            table.dataTable thead .searchFieldID {
+                max-width: 157px;
             }
 
-            table .dataTable thead th:first-child {
-                border-left: none;
-            }
-
-    table.dataTable tfoot {
-        font-size: 14px;
-        font-weight: bold;
-        color: #FFFFFF;
-        background: #D0E4F5;
-        background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-        background: -webkit-gradient(linear, top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-        background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-        background: -o-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-        background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
-        border-top: 2px solid #444444;
-    }
-
+table.dataTable tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: #D0E4F5;
+    background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -webkit-gradient(linear, top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -o-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    border-top: 2px solid #444444;
+}
         table.dataTable tfoot td {
             font-size: 14px;
         }
-
         table.dataTable tfoot .links {
             text-align: right;
         }
-
             table.dataTable tfoot .links a {
                 display: inline-block;
                 background: #1C6EA4;
@@ -414,7 +398,6 @@ table.dataTable tbody .centerAligned {
         background-color: #cfd9e6;
         background-color: rgba(176, 190, 217, 0.5) !important;
     }
-
     table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
         background-position: top right !important;
     }
@@ -422,4 +405,12 @@ table.dataTable tbody .centerAligned {
 /* End of table styling */
 .tooltipWindow {
     font-size: 0.85em !important;
+}
+
+.ui-button .ui-icon {
+    background-image: url(Dependencies/jquery-ui-DotLuv/images/ui-icons_ffffff_256x240.png) !important;
+}
+
+.ui-button:focus .ui-icon {
+    background-image: url(Dependencies/jquery-ui-DotLuv/images/ui-icons_9ccdfc_256x240.png) !important;
 }
