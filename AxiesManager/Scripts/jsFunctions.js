@@ -6,7 +6,7 @@ let test = [];
 function requestAxies() {
     const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = page
-    let stage; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+    let stage = ''; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
     let ampersandRequired = false;
     if ($("#checkbox-filter-adult").is(':checked')) {
         stage = '4';
