@@ -247,6 +247,18 @@ function calculateTrueAttack(axSkill, axMorale, moveAtk, moveAcc) {
 //// Data Formating and Tool Functions [END] ////
 
 
+//// Prices and Marketplace [START] ////
+function axieValueCalculator(axie,attackRating,defenceRating) {
+    let valueRating = 0;
+    let expMdf = 0.1;
+    let atkRatingMdf = 1;
+    let defRatingMdf = 1;
+    
+    return valueRating;
+}
+//// Prices and Marketplace [END] ////
+
+
 //// Links & Redirections [START] ////
 function openBreedingCalc() {
     let table = $('#axiesTable').DataTable();
