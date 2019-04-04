@@ -204,7 +204,7 @@ function loadDatatable() {
                 },
                 {
                     data: function (data, type, row) {
-                        if (data['stage'] == 2) {
+                        if (data['stage'] == 2 || data['stage'] == 3) {
                             return '<span style="font-style:italic">Not an adult</span>';
                         }
                         let teamsList = ''; // String
