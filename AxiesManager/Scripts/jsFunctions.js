@@ -1,11 +1,12 @@
 ﻿let URLaxies;
 let rowSelections = [];
 let test = [];
+let axiesPerPage = 12;
 
 //// Axie Data [START] ////
 function requestAxies() {
-    const BASE_URL = 'https://axieinfinity.com/api/addresses/';
-    let offset = 0; // offset = page
+    const BASE_URL = 'https://axieinfinity.com/api/v2/addresses/';
+    let offset = 0; // offset = Axie to start counting
     let stage = ''; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
     let ampersandRequired = false;
     if ($("#checkbox-filter-adult").is(':checked')) {
@@ -28,7 +29,7 @@ function requestAxies() {
     }
     console.log(stage);
     URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
-    // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
+    // example: https://axieinfinity.com/api/v2/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 
     let promise = new Promise(function (resolve, reject) {
         console.log('requestAxies called')
@@ -49,12 +50,12 @@ function requestAxies() {
 function getAllPagesToArray() {
     let promise = new Promise(async function (resolve, reject) {
         console.log('getAllPagesToArray called');
-        $('#loader p').text('Some are coming from the edges of Lunacia...');
-        if (axiesDataObj['data']['totalPages'] > 1) {
+        if (axiesDataObj['data']['totalAxies'] > axiesPerPage) {
+            $('#loader p').text('Some are coming from the edges of Lunacia...');
             console.log('User has multiple pages of Axies');
             let allPages = [];
 
-            for (let i = 1; i <= (axiesDataObj['data']['totalPages'] - 1); i++) {
+            for (let i = 1; i <= Math.ceil(axiesDataObj['data']['totalAxies'] / axiesPerPage); i++) {
                 allPages.push(axios.get(URLaxies + '&offset=' + i * 12));
             }
             await axios.all(allPages)
@@ -184,7 +185,7 @@ async function paintAxies() {
 
 // Not used yet
 function getBodyParts() {
-    const URLparts = 'https://axieinfinity.com/api/body-parts';
+    const URLparts = 'https://axieinfinity.com/api/v2/body-parts?lang=en';
     axios.get(URLparts)
         .then((response) => {
             return response;
@@ -202,15 +203,23 @@ function getBattleTeams() {
         console.log('getBattleTeams called')
         const BASE_URL = 'https://api.axieinfinity.com/v1/battle/teams/';
         let offset = 0; // offset = page
-        let count = 9999; // Number of teams to load
+        let count = 1; // Number of teams to load
         let noLimit = '1'; // Bollean, 1 = no limit in the amount of teams to load
         let URLteams = BASE_URL + '?address=' + ethAddress + '&offset=' + offset + '&count=' + count + '&no_limit=' + noLimit;
         // example: https://api.axieinfinity.com/v1/battle/teams/?address=0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22&offset=0&count=9999&no_limit=true
 
         axios.get(URLteams)
             .then(response => {
-                battleTeams = response;
-                resolve('Promise done!');
+                count = response['data']['total'];
+                URLteams = BASE_URL + '?address=' + ethAddress + '&offset=' + offset + '&count=' + count + '&no_limit=' + noLimit;
+                axios.get(URLteams)
+                    .then(response => {
+                        battleTeams = response;
+                        resolve('Promise done!');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
             })
             .catch(error => {
                 console.log(error);
