@@ -186,7 +186,7 @@ function loadDatatable() {
                 { data: 'stats.speed', title: 'Speed', width: '55px', className: 'centerAligned' },
                 { data: 'stats.skill', title: 'Skill', width: '55px', className: 'centerAligned' },
                 { data: 'stats.morale', title: 'Morale', width: '55px', className: 'centerAligned' },
-                //{ data: 'parts.stats.attackScore', title: 'Attack Score', width: '65px', className: 'centerAligned' },
+                { data: 'parts.stats.attackScore', title: 'Attack Score', width: '65px', className: 'centerAligned attackScore' },
                 {
                     data: function (data, type, row) {
                         if (type === 'sort' || type === 'filter' || type === 'type') {

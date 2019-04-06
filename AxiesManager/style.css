@@ -288,6 +288,10 @@ table.dataTable tbody .readyToMorph {
     background-color: rgba(0, 255, 0, 0.3);
 }
 
+table.dataTable tbody .attackScore {
+    font-weight: bold;
+}
+
 table.dataTable tbody .centerAligned {
     text-align: center;
 }

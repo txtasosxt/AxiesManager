@@ -1,7 +1,7 @@
 ﻿let URLaxies;
 let rowSelections = [];
-let test = [];
-let axiesPerPage = 12;
+const axiesPerPage = 12;
+
 
 //// Axie Data [START] ////
 function requestAxies() {
