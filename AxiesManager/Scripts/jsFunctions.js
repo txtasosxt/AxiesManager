@@ -150,11 +150,13 @@ function getMovesStats() {
                         extendedData_MovesStats[i]['attackScore'] += calculateTrueAttack(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy'])
                     }
                     extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
-                    if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
-                        let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
-                        let effectPart = capitalize(parts[i2]['type']);
-                        let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
-                        extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
+                    if (parts[i2]['moves'][0]['effects'] !== null) {
+                        if (parts[i2]['moves'][0]['effects'][0] !== undefined) {
+                            let effectTitle = parts[i2]['moves'][0]['effects'][0]['name'];
+                            let effectPart = capitalize(parts[i2]['type']);
+                            let effectDescr = parts[i2]['moves'][0]['effects'][0]['description'];
+                            extendedData_MovesStats[i]['effects'].push(effectPart + ' : (' + effectTitle + ') ' + effectDescr);
+                        }
                     }
                 }
             }
@@ -180,6 +182,7 @@ async function paintAxies() {
                 axiesImagesURL.push(results[i]['data']['static']['idle'])
             }
         })
+    console.log('avatars done');
     return axiesImagesURL;
 }
 
