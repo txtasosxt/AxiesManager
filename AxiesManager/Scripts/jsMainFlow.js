@@ -218,15 +218,16 @@ function loadDatatable() {
                 {
                     data: function (data, type, row) {
                         let birthTimestamp = data['birthDate'];
-                        let nowTimestamp = Math.floor(Date.now() / 1000)
+                        let nowTimestamp = Math.floor(Date.now() / 1000);
                         let twoDays = 172800;
                         let fourDays = twoDays * 2;
+                        let expForBreeding = expRequirPerBreedCount[data['breedCount']];
 
                         if (data['stage'] == 4) {
-                            if (data['exp'] >= data['expForBreeding']) {
-                                return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #1a699c; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                            if (data['exp'] >= expForBreeding) {
+                                return 'Yes <br /> <span style="font-size: 11px"> (<span style="color: #1a699c; font-weight: bold;">' + data['exp'] + '</span>/' + expForBreeding + ')</span>';
                             } else {
-                                return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + data['expForBreeding'] + ')</span>';
+                                return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + expForBreeding + ')</span>';
                             }
                         } else if (data['stage'] == 3 && nowTimestamp - fourDays >= birthTimestamp ) {
                             return 'Ready to become adult!'

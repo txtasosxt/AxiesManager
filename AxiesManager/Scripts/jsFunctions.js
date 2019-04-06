@@ -1,7 +1,7 @@
 ﻿let URLaxies;
 let rowSelections = [];
 const axiesPerPage = 12;
-
+const expRequirPerBreedCount = [700, 900, 900, 1500, 2400, 3000, 3000]
 
 //// Axie Data [START] ////
 function requestAxies() {
