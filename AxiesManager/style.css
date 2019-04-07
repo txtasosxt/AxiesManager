@@ -3,6 +3,10 @@
     font-size: small;
     margin: 0;
 }
+/* Hide jQueryUI elements before transforming them */
+button {
+    display: none;
+}
 a {
     color: inherit;
 }
@@ -178,7 +182,6 @@ abbr {
         }
 
 .breedingCalcContainer #breedingCalcBtn {
-    display: block;
     float: left;
     margin-right: 8px;
 }
@@ -222,7 +225,6 @@ table.dataTable {
     border: 1px solid #1C6EA4;
     background-color: #EEEEEE;
     text-align: left;
-    border-collapse: collapse;
     table-layout: auto;
 }
 
@@ -245,7 +247,7 @@ table.dataTable {
     }
 
     table.dataTable tbody td {
-        padding: 0 10px !important;
+        padding: 0 10px;
         font-size: 16px;
     }
 
@@ -314,8 +316,9 @@ table.dataTable tbody .centerAligned {
         background-color: #f9f3fc;
     }
     table.dataTable tbody .axieThumbnail {
-        max-width: 172px;
+        max-width: 150px;
         position: relative;
+        padding: 0;
     }
         table.dataTable tbody .axieThumbnail img {
             position: relative;
@@ -323,9 +326,6 @@ table.dataTable tbody .centerAligned {
             top: -5px;
             height: 95px;
             object-fit: cover;
-        }
-        table.dataTable tbody td.axieThumbnail a {
-            mix-blend-mode: multiply;
         }
         table.dataTable tbody td.axieThumbnail span {
             display: block;

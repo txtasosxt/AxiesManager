@@ -27,7 +27,7 @@ function requestAxies() {
         stage += '2';
         ampersandRequired = true;
     }
-    console.log(stage);
+    console.log('Axies stage filter:' + stage);
     URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
     // example: https://axieinfinity.com/api/v2/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 
@@ -70,10 +70,10 @@ function getAllPagesToArray() {
                     console.log(error);
                 });
         }
-        let axiesImages = await paintAxies();
-        for (let i = 0; i < axiesDataArr.length; i++) {
-            axiesDataArr[i]['img'] = axiesImages[i];
-        }
+        //let axiesImages = await paintAxies();
+        //for (let i = 0; i < axiesDataArr.length; i++) {
+        //    axiesDataArr[i]['img'] = axiesImages[i];
+        //}
         resolve('Promise done!');
     });
     return promise;
@@ -166,7 +166,7 @@ function getMovesStats() {
     return extendedData_MovesStats;
 }
 
-async function paintAxies() {
+/*async function paintAxies() {
     $('#loader p').text('Lining them all up...');
     const BASE_URL = 'https://api.axieinfinity.com/v1/figure/';
     axiesImagesInitURL = [];
@@ -184,7 +184,7 @@ async function paintAxies() {
         })
     console.log('avatars done');
     return axiesImagesURL;
-}
+}*/
 
 // Not used yet
 function getBodyParts() {
@@ -369,14 +369,6 @@ function addTableSearchFields() {
         });
         filterInputSelected = $(filterInputSelected).parent().next().find('input');
     });
-}
-
-function moveAxieClassToParentElement() {
-    $('#axiesTable td a').each(function (elemClass) {
-        elemClass = $(this).attr('class');
-        $(this).removeClass(elemClass)
-        $(this).parent().addClass(elemClass);
-    })
 }
 
 function enablePartsEffectsTooltips() {

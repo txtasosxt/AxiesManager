@@ -175,7 +175,7 @@ function loadDatatable() {
                             })
                             effectsDescr = effectsDescr.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
                         }
-                        return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['img']}" /></a><span>${data['id']}</span>`;
+                        return `<a class="movesEffectsTooltip ${data['class']}" style="display: block;" href="https://axieinfinity.com/axie/${data['id']}" target="_blank" title="${effectsDescr}"><img style="display: block;" width="150" src="${data['image']}" /></a><span>${data['id']}</span>`;
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
@@ -258,7 +258,6 @@ function loadDatatable() {
             // Run the following when the datatable initialization is completed
             initComplete: () => {
                 addTableSearchFields();
-                moveAxieClassToParentElement();
                 enablePartsEffectsTooltips();
                 $('#axiesTable tbody td a:contains("[NONE]")').parent().addClass('noTeam');
                 $('#axiesTable tbody td.expStatus:contains("Ready to become")').addClass('readyToMorph');
