@@ -298,22 +298,28 @@ table.dataTable tbody .centerAligned {
     text-align: center;
 }
     table.dataTable tbody .beast {
-        background-color: #fff8e7;
+        background-color: #fff4db;
+        background-color: rgba(255, 183, 15, 0.15);
     }
     table.dataTable tbody .aquatic {
-        background-color: #e5f8fa;
+        background-color: #d9f4f8;
+        background-color: rgba(0, 183, 206, 0.15);
     }
     table.dataTable tbody .plant {
-        background-color: #f0f9e5;
+        background-color: #e9f5d9;
+        background-color: rgba(107, 191, 0, 0.15);
     }
     table.dataTable tbody .bird {
-        background-color: #fff3f8;
+        background-color: #ffeef5;
+        background-color: rgba(255, 138, 188, 0.15);
     }
     table.dataTable tbody .bug {
-        background-color: #ffedec;
+        background-color: #ffe5e3;
+        background-color: rgba(255, 82, 65, 0.15);
     }
     table.dataTable tbody .reptile {
-        background-color: #f9f3fc;
+        background-color: #f2ebfe;
+        background-color: rgba(169, 121, 248, 0.15);
     }
     table.dataTable tbody .axieThumbnail {
         max-width: 150px;

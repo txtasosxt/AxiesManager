@@ -122,7 +122,8 @@ function functionsFlow() {
         .then(() =>  {
             return loadBattleTeams(); // Load all the teams data into the "axiesDataArr" Array
         })
-        .then(() =>  {
+        .then(() => {
+            $('#loader p').text('Lining them all up...');
             loadDatatable();
         })
 }
@@ -143,7 +144,7 @@ function loadDatatable() {
             order: [0, 'desc'],
             paging: true,
             pageLength: 100,
-            deferRender: true,
+            deferRender: false,
             autoWidth: true,
             fixedHeader: true,
             select: {
@@ -250,6 +251,14 @@ function loadDatatable() {
                     }
                 },
             ],
+            createdRow: function (row, data, dataIndex) {
+                if (data['battleTeam'][0]['name'] == '[NONE]' && data['stage'] == 4) {
+                    $(row).find('.axieBattleTeam').addClass('noTeam');
+                }
+                if ($(row).find('.expStatus:contains("Ready to become")').length > 0) {
+                    $(row).find('.expStatus').addClass('readyToMorph');
+                }
+            },
             columnDefs: [
                 {
                     orderSequence: ['desc', 'asc'], targets: ['_all']
@@ -259,8 +268,7 @@ function loadDatatable() {
             initComplete: () => {
                 addTableSearchFields();
                 enablePartsEffectsTooltips();
-                $('#axiesTable tbody td a:contains("[NONE]")').parent().addClass('noTeam');
-                $('#axiesTable tbody td.expStatus:contains("Ready to become")').addClass('readyToMorph');
+
                 attackBarsInit();
                 rowSelector();
                 tableExists = 1;
