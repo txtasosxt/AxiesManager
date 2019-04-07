@@ -259,6 +259,10 @@ function loadDatatable() {
                 if ($(row).find('.expStatus:contains("Ready to become")').length > 0) {
                     $(row).find('.expStatus').addClass('readyToMorph');
                 }
+                let attackBeastBug = data['parts']['stats']['attackBeastBug'];
+                let attackPlantReptile = data['parts']['stats']['attackPlantReptile'];
+                let attackAquaticBird = data['parts']['stats']['attackAquaticBird'];
+                attackBarsInit($(row).find('.classAttackBar').eq(0), attackBeastBug, attackPlantReptile, attackAquaticBird);
             },
             columnDefs: [
                 {
@@ -269,8 +273,6 @@ function loadDatatable() {
             initComplete: () => {
                 addTableSearchFields();
                 enablePartsEffectsTooltips();
-
-                attackBarsInit();
                 rowSelector();
                 tableExists = 1;
             }

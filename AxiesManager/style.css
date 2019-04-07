@@ -249,6 +249,8 @@ table.dataTable {
 
     table.dataTable tbody .attackSum {
         position: relative;
+        padding: 0;
+        min-width: 230px;
     }
         table.dataTable tbody .attackSum span {
             position: absolute;

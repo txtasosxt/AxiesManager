@@ -372,8 +372,11 @@ function enablePartsEffectsTooltips() {
     });
 }
 
-function attackBarsInit() {
-    const allCanvas = $('.classAttackBar')
+/*function attackBarsInit_OLD() {
+    let allCanvas = $('.classAttackBar');
+    console.log('---------');
+    console.log(allCanvas);
+    console.log('---------');
 
     for (let i = 0; i < allCanvas.length; i++) {
         let thisCanvas = $('.classAttackBar').eq(i);
@@ -435,7 +438,69 @@ function attackBarsInit() {
             }
         });
     }
+}*/
+
+function attackBarsInit(selectedElement, attackBeastBug, attackPlantReptile, attackAquaticBird) {
+    let thisCanvas = selectedElement;
+    let classAttack = [attackBeastBug, attackPlantReptile, attackAquaticBird];
+    //let thisCanvas2d = thisCanvas.getContext('2d');
+
+    new Chart(thisCanvas, {
+        type: 'horizontalBar',
+        data: {
+            labels: ['Beast / Bug', 'Plant / Reptile', 'Aquatic / Bird'],
+            datasets: [{
+                label: 'Total Attack',
+                data: classAttack,
+                backgroundColor: [
+                    'rgba(255, 183, 15, 0.3)',
+                    'rgba(107, 191, 0, 0.3)',
+                    'rgba(0, 183, 206, 0.3)',
+                ],
+                borderColor: [
+                    'rgba(255, 183, 15, 1)',
+                    'rgba(107, 191, 0, 1)',
+                    'rgba(0, 183, 206, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            tooltips: {
+                titleFontSize: 11,
+                bodyFontSize: 10,
+                position: 'nearest'
+            },
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true,
+                        fontColor: '#000'
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                    barPercentage: 1
+                }],
+                xAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        display: false
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            }
+        }
+    });
 }
+
 
 // Checks if more than 2 rows have been selected and diselects the first one 
 function rowSelector() {
