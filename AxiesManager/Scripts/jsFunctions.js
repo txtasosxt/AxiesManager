@@ -2,6 +2,8 @@
 let rowSelections = [];
 const axiesPerPage = 12;
 const expRequirPerBreedCount = [700, 900, 900, 1500, 2400, 3000, 3000]
+let accountTotalMorale = 0;
+let accountTotalAttack = 0;
 
 //// Axie Data [START] ////
 function requestAxies() {
@@ -70,10 +72,6 @@ function getAllPagesToArray() {
                     console.log(error);
                 });
         }
-        //let axiesImages = await paintAxies();
-        //for (let i = 0; i < axiesDataArr.length; i++) {
-        //    axiesDataArr[i]['img'] = axiesImages[i];
-        //}
         resolve('Promise done!');
     });
     return promise;
@@ -95,7 +93,8 @@ function loadAxiesExtendedData() {
                         'attackBeastBug': 0,
                         'attackPlantReptile': 0,
                         'attackAquaticBird': 0,
-                        'attackScore': 0
+                        'attackScore': 0,
+                        'defenseScore': 0
                     }
                 };
                 axiesDataArr[i]['stats'] = {
@@ -113,8 +112,11 @@ function loadAxiesExtendedData() {
                     'attackBeastBug': extendedData_MovesStats[i]['attackBeastBug'],
                     'attackPlantReptile': extendedData_MovesStats[i]['attackPlantReptile'],
                     'attackAquaticBird': extendedData_MovesStats[i]['attackAquaticBird'],
-                    'attackScore': extendedData_MovesStats[i]['attackScore']
+                    'attackScore': extendedData_MovesStats[i]['attackScore'],
+                    'defenseScore': extendedData_MovesStats[i]['defenseScore']
                 }
+                accountTotalMorale += axiesDataArr[i]['stats']['morale'];
+                accountTotalAttack += axiesDataArr[i]['parts']['stats']['attack'];
             }
         }
         resolve('Promise done!');
@@ -127,7 +129,7 @@ function getMovesStats() {
     let attackPartsCount = [];
     for (let i = 0; i < axiesDataArr.length; i++) {
         extendedData_MovesStats.push({
-            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0, 'attackScore': 0
+            'accuracy': 0, 'attack': 0, 'defense': 0, 'effects': [], 'attackBeastBug': 0, 'attackPlantReptile': 0, 'attackAquaticBird': 0, 'attackScore': 0, 'defenseScore': 0 
         })
         attackPartsCount.push(0);
         if (axiesDataArr[i]['stage'] == 2) {
@@ -147,7 +149,7 @@ function getMovesStats() {
                         } else if (parts[i2]['class'] == 'aquatic' || parts[i2]['class'] == 'bird') {
                             extendedData_MovesStats[i]['attackAquaticBird'] += parts[i2]['moves'][0]['attack'];
                         }
-                        extendedData_MovesStats[i]['attackScore'] += calculateTrueAttack(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy'])
+                        extendedData_MovesStats[i]['attackScore'] += calculateAttackScore(axiesDataArr[i]['stats']['skill'], axiesDataArr[i]['stats']['morale'], parts[i2]['moves'][0]['attack'], parts[i2]['moves'][0]['accuracy']);
                     }
                     extendedData_MovesStats[i]['defense'] += parts[i2]['moves'][0]['defense'];
                     if (parts[i2]['moves'][0]['effects'] !== null) {
@@ -161,30 +163,11 @@ function getMovesStats() {
                 }
             }
             extendedData_MovesStats[i]['accuracy'] /= attackPartsCount[i];
+            extendedData_MovesStats[i]['defenseScore'] += calculateDefenseScore(axiesDataArr[i]['stats']['hp'], axiesDataArr[i]['stats']['speed'], extendedData_MovesStats[i]['defense']);
         }
     }
     return extendedData_MovesStats;
 }
-
-/*async function paintAxies() {
-    $('#loader p').text('Lining them all up...');
-    const BASE_URL = 'https://api.axieinfinity.com/v1/figure/';
-    axiesImagesInitURL = [];
-    axiesImagesURL = [];
-
-    for (let i = 0; i < axiesDataArr.length; i++) {
-        axiesImagesInitURL.push(BASE_URL + axiesDataArr[i]['id']);
-    }
-    let promiseArray = await axiesImagesInitURL.map(url => axios.get(url));
-    await axios.all(promiseArray)
-        .then(results => {
-            for (let i in results) {
-                axiesImagesURL.push(results[i]['data']['static']['idle'])
-            }
-        })
-    console.log('avatars done');
-    return axiesImagesURL;
-}*/
 
 // Not used yet
 function getBodyParts() {
@@ -274,35 +257,33 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function calculateTrueAttack(axSkill, axMorale, moveAtk, moveAcc) {
+function calculateAttackScore(axSkill, axMorale, moveAtk, moveAcc) {
     let acc = (axSkill * 0.333 + moveAcc) / 100;
     let trAt = moveAtk * acc;
     let crCh = axMorale * 0.5 / 100;
     let crAt = trAt * crCh;
     return Math.round((trAt + crAt) * 100);
 }
+
+function calculateDefenseScore(axHP, axSpeed, axDef) {
+    let survivability = axHP + axDef;
+    let dodgeCh = axSpeed * 0.125 / 100;
+    let crRes = axSpeed * 0.25 / 100;
+    let dodgeBonus = survivability * dodgeCh;
+    let crResBonus = survivability * crRes;
+    return Math.round((survivability + dodgeBonus + crResBonus) * 100);
+}
+
 //// Data Formating and Manipulation Functions [END] ////
 
 
 //// Prices and Marketplace [START] ////
-function axieValueCalculator(axie, attackRating, defenceRating) {
+function axieValueCalculator(axie, attackRating, defenseRating) {
     let valueRating = 0;
     let expMdf = 0.1;
     let atkRatingMdf = 1;
     let defRatingMdf = 1;
 
-    return valueRating;
-}
-//// Prices and Marketplace [END] ////
-
-
-//// Prices and Marketplace [START] ////
-function axieValueCalculator(axie,attackRating,defenceRating) {
-    let valueRating = 0;
-    let expMdf = 0.1;
-    let atkRatingMdf = 1;
-    let defRatingMdf = 1;
-    
     return valueRating;
 }
 //// Prices and Marketplace [END] ////
@@ -352,7 +333,7 @@ function addTableSearchFields() {
     $('table.dataTable thead tr').first().before('<tr role="row" class="headerFilters"></tr>');
     $('#axiesTable thead th').each(function () {
         var title = $(this).text().replace(/\s/g, '');
-        $('<th class="columnSearchField searchField' + title + '"><input class="" type="search" placeholder="Search ' + title + '" /></th>').appendTo('.headerFilters').first();
+        $('<th class="columnSearchField searchField' + title + '"><input class="" type="search" placeholder="' + title + ' Search" /></th>').appendTo('.headerFilters').first();
     });
 
     // Apply the search on 'keyup'

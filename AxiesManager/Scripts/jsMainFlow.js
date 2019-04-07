@@ -180,14 +180,15 @@ function loadDatatable() {
                     },
                     title: 'ID', className: 'axieThumbnail', width: '135px', type: 'num'
                 },
-                { data: 'name', title: 'Name', width: '170px', className:'centerAligned' },
+                { data: 'name', title: 'Name', width: '170px', className: 'centerAligned' },
                 { data: 'class', title: 'Class', width: '65px', className: 'axieClass' },
-                { data: 'stats.hp', title: 'HP', width: '55px', className: 'centerAligned' },
+                { data: 'stats.hp', title: 'HP', width: '55px', className: 'centerAligned tableColHP' },
                 { data: 'parts.stats.defense', title: 'Total Defense', width: '55px', className: 'centerAligned' },
                 { data: 'stats.speed', title: 'Speed', width: '55px', className: 'centerAligned' },
-                { data: 'stats.skill', title: 'Skill', width: '55px', className: 'centerAligned' },
+                { data: 'stats.skill', title: 'Skill', width: '55px', className: 'centerAligned tableColSkill' },
                 { data: 'stats.morale', title: 'Morale', width: '55px', className: 'centerAligned' },
                 { data: 'parts.stats.attackScore', title: 'Attack Score', width: '65px', className: 'centerAligned attackScore' },
+                { data: 'parts.stats.defenseScore', title: 'Defense Score', width: '65px', className: 'centerAligned defenseScore' },
                 {
                     data: function (data, type, row) {
                         if (type === 'sort' || type === 'filter' || type === 'type') {

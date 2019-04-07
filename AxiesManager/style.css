@@ -238,10 +238,6 @@ table.dataTable {
         background-color: rgba(0, 0, 0, 0.01);
     }
 
-    /*table.dataTable tbody tr.even {
-        background-color: rgba(0, 0, 0, 0.01);
-    }*/
-
     table.dataTable tbody tr:last-child {
         text-align: left;
     }
@@ -273,6 +269,10 @@ table.dataTable {
         z-index: -1;
     }
 
+.dataTable tbody .tableColHP, .dataTable tbody .tableColSkill {
+    min-width: 2em;
+}
+
 .dataTable tbody td.axieClass {
     text-transform: capitalize;
 }
@@ -290,7 +290,7 @@ table.dataTable tbody .readyToMorph {
     background-color: rgba(0, 255, 0, 0.3);
 }
 
-table.dataTable tbody .attackScore {
+table.dataTable tbody .attackScore, table.dataTable tbody .defenseScore {
     font-weight: bold;
 }
 
