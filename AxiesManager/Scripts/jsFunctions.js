@@ -81,7 +81,7 @@ function getAllPagesToArray() {
 function loadAxiesLowResImages() {
     axiesDataArr.forEach(axie => {
         let halfResImg; // URL string
-        halfResImg = axie['image'].substring(0, axiesDataArr[0]["image"].length - 20) + 'half.png';
+        halfResImg = axie['image'].substring(0, axie['image'].length - 20) + 'half.png';
         axie['image'] = halfResImg;
     })
 }
