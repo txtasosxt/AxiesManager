@@ -72,9 +72,22 @@ function getAllPagesToArray() {
                     console.log(error);
                 });
         }
+        loadAxiesLowResImages();
         resolve('Promise done!');
     });
     return promise;
+}
+
+function loadAxiesLowResImages() {
+    axiesDataArr.forEach(axie => {
+        let halfResImg; // URL string
+        halfResImg = axie['image'].substring(0, axiesDataArr[0]["image"].length - 20) + 'half.png';
+        axie['image'] = halfResImg;
+    }
+        
+        forEach(elementLVL1 => {
+                elementLVL1['teamMembers'].forEach(elementLVL2 => {
+                    if (elementLVL2['axieId'] == axiesDataArr
 }
 
 function loadAxiesExtendedData() {
