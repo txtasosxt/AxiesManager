@@ -42,10 +42,6 @@ window.addEventListener('load', async function () {
     }
     web3.eth.getAccounts(function (error, result) {
         $('#ethAddressInput').val(result[0]);
-        ethAddress = result[0];
-
-        // Get Ethereum address after the window is loaded and check every 1sec for changed address
-        ///let intervalEthAddressCheck = setInterval(checkEthAddressChange, 1000);
     });
 });
 
@@ -61,60 +57,65 @@ function checkEthAddressChange() {
     });
 };
 
-// Gets the Ethereum address from MetaMask
+// Saves the Ethereum address and starts the program
 function updateEthAddress(address) {
     if (address == null || address == undefined || address == '') {
         alert('Please fill an Ethereum address!');
         return;
     }
     if (address !== undefined) {
-        //clearInterval(intervalEthAddressCheck);
         ethAddress = address;
         $('#ethAddressInput').val(ethAddress);
         functionsFlow();
     }
-    else {
-        setTimeout(function () { // web3.eth.getAccounts returns lower case in 1st run if not within setTimeout (bug?)
-            web3.eth.getAccounts(function (error, result) {
-                console.log(result[0]);
-                // Only update if address changed or on init
-                if (ethAddress === null || ethAddress !== result[0]) {
-                    ethAddress = result[0];
-                    $('#ethAddressInput').val(result[0]);
-                    if (ethAddress === undefined) {
-                        console.log('No Ethereum address');
-                    } else {
-                        document.getElementById('ethAddressInput').innerHTML = result[0];
-                        functionsFlow();
-                    };
-                    return (ethAddress);
-                    console.log('updateEthAddress DONE');
-                };
-            });
-        }, 0);
-    }
-};
+}
 
 function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
     // START of setting chained promises
     let promise1 = new Promise(function (resolve, reject) {
-        requestAxies() // (1) Get the 1st page
-            .then(() => {
-                return getAllPagesToArray(); // (2) Get all the pages
-            })
-            .then(() => {
-                return loadAxiesExtendedData(); // (3) Get parts stats and load datatable
-            })
-            .then(() => {
-                resolve();
-            })
+        if (ethAddress.length != 42) {
+            requestSingleAxie() // (1) Get the Axie's basic info
+                .then(() => {
+                    if (axiesDataArr[0] == '' || axiesDataArr[0] == null || axiesDataArr[0] == undefined) {
+                        let errorMsg = 'Wrong or empty address. No Axies have been found!';
+                        abortFunctionsFlow(errorMsg);
+                        reject(errorMsg);
+                        throw new Error(errorMsg);
+                    }
+                    return loadAxiesExtendedData(); // (2) Get parts stats and load datatable
+                })
+                .then(() => {
+                    resolve();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
+        } else {
+            requestAxies() // (1) Get the 1st page
+                .then(() => {
+                    return getAllPagesToArray(); // (2) Get all the pages
+                })
+                .then(() => {
+                    return loadAxiesExtendedData(); // (3) Get parts stats and load datatable
+                })
+                .then(() => {
+                    resolve();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
     })
     let promise2 = new Promise(function (resolve, reject) {
         getBattleTeams() // Get all the teams
             .then(() => {
                 resolve();
+            })
+            .catch(error => {
+                console.log(error);
             })
     })
     // END of setting chained promises
@@ -126,16 +127,15 @@ function functionsFlow() {
             $('#loader p').text('Lining them all up...');
             loadDatatable();
         })
+        .catch(error => {
+            console.log(error);
+        })
 }
 
 function loadDatatable() {
     console.log('loadDatatable called');
     if (tableExists == 0) {
-        console.log('IF was TRUE (no table found)')
-        $('#loader').removeClass('visible');
-        $('#loader').dialog('close');
-        $('#axiesLoadingProgressBar').progressbar('destroy');
-
+        uiLoadingFinish();
         $('#axiesTable').DataTable({
             serverSide: false,
             responsive: false,

@@ -7,7 +7,8 @@ let accountTotalAttack = 0;
 
 //// Axie Data [START] ////
 function requestAxies() {
-    const BASE_URL = 'https://axieinfinity.com/api/v2/addresses/';
+    console.log('requestAxies called')
+    const BASE_URL = 'https://axieinfinity.com/api/addresses/';
     let offset = 0; // offset = Axie to start counting
     let stage = ''; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
     let ampersandRequired = false;
@@ -31,10 +32,9 @@ function requestAxies() {
     }
     console.log('Axies stage filter:' + stage);
     URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
-    // example: https://axieinfinity.com/api/v2/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
+    // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
 
     let promise = new Promise(function (resolve, reject) {
-        console.log('requestAxies called')
         // Requesting the 1st page of the Axies collection.
         axios.get(URLaxies)
             .then(response => {
@@ -46,6 +46,27 @@ function requestAxies() {
                 console.log(error);
             })
     });
+    return promise;
+}
+
+function requestSingleAxie() {
+    console.log('Requesting a single Axie\'s info');
+    const BASE_URL = 'https://axieinfinity.com/api/axies/';
+    let axieID = ethAddress;
+    URLaxies = BASE_URL + axieID;
+
+    let promise = new Promise(function (resolve, reject) {
+        axios.get(URLaxies)
+            .then(response => {
+                axiesDataObj = response;
+                axiesDataArr.push(axiesDataObj['data']);
+                resolve('Promise done!');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    });
+    loadAxiesLowResImages();
     return promise;
 }
 
@@ -90,7 +111,7 @@ function loadAxiesExtendedData() {
     let promise = new Promise(async function (resolve, reject) {
         console.log('loadAxiesExtendedData called');
         let extendedData_MovesStats = await getMovesStats();
-        //let extendedData_pendingEXP = getpendingEXP();
+
         for (let i = 0; i < axiesDataArr.length; i++) {
             if (axiesDataArr[i]['stage'] == 2) {
                 axiesDataArr[i]['parts'] = {
@@ -282,7 +303,6 @@ function calculateDefenseScore(axHP, axSpeed, axDef) {
     let crResBonus = survivability * crRes;
     return Math.round((survivability + dodgeBonus + crResBonus) * 100);
 }
-
 //// Data Formating and Manipulation Functions [END] ////
 
 
@@ -381,74 +401,6 @@ function enablePartsEffectsTooltips() {
     });
 }
 
-/*function attackBarsInit_OLD() {
-    let allCanvas = $('.classAttackBar');
-    console.log('---------');
-    console.log(allCanvas);
-    console.log('---------');
-
-    for (let i = 0; i < allCanvas.length; i++) {
-        let thisCanvas = $('.classAttackBar').eq(i);
-        let classAttack = [thisCanvas.data('beast_bug'), thisCanvas.data('plant_reptile'), thisCanvas.data('aquatic_bird')];
-        //let thisCanvas2d = thisCanvas.getContext('2d');
-
-        new Chart(thisCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: ['Beast / Bug', 'Plant / Reptile', 'Aquatic / Bird'],
-                datasets: [{
-                    label: 'Total Attack',
-                    data: classAttack,
-                    backgroundColor: [
-                        'rgba(255, 183, 15, 0.3)',
-                        'rgba(107, 191, 0, 0.3)',
-                        'rgba(0, 183, 206, 0.3)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 183, 15, 1)',
-                        'rgba(107, 191, 0, 1)',
-                        'rgba(0, 183, 206, 1)',
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                tooltips: {
-                    titleFontSize: 11,
-                    bodyFontSize: 10,
-                    position: 'nearest'
-                },
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            mirror: true,
-                            fontColor: '#000'
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        barPercentage: 1
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            display: false
-                        },
-                        gridLines: {
-                            display: false
-                        }
-                    }]
-                }
-            }
-        });
-    }
-}*/
-
 function attackBarsInit(selectedElement, attackBeastBug, attackPlantReptile, attackAquaticBird) {
     let thisCanvas = selectedElement;
     let classAttack = [attackBeastBug, attackPlantReptile, attackAquaticBird];
@@ -510,7 +462,6 @@ function attackBarsInit(selectedElement, attackBeastBug, attackPlantReptile, att
     });
 }
 
-
 // Checks if more than 2 rows have been selected and diselects the first one 
 function rowSelector() {
     let table = $('#axiesTable').DataTable();
@@ -540,4 +491,25 @@ function rowSelector() {
         }
     });
 }
+
+function uiLoadingFinish() {
+    $('#loader').removeClass('visible');
+    $('#loader').dialog('close');
+    if ($("#axiesLoadingProgressBar").progressbar()) {
+        $('#axiesLoadingProgressBar').progressbar('destroy');
+    }
+}
 //// DOM Formating and jQuery UI [END] ////
+
+//// Other Functions & Queries [START] ////
+function abortFunctionsFlow(errorMsg) {
+    $('#pageReloadWarning').css('display', 'none');
+    $('#loadAxiesBtnContainer').css('display', 'block');
+    $('input#ethAddressInput').removeClass('input-disabled');
+    $('input#ethAddressInput').attr('readonly', false);
+    axiesDataObj = [];
+    axiesDataArr = [];
+    $('#loader p').text(errorMsg);
+    setTimeout(uiLoadingFinish, 2500);
+}
+//// Other Functions & Queries [END] ////
