@@ -100,7 +100,7 @@ function getAllPagesToArray() {
 
 function loadAxiesLowResImages() {
     axiesDataArr.forEach(axie => {
-        if (axie['stage'] == 4) {
+        if (axie['stage'] == 4 || axie['stage'] == 3) {
             let halfResImg; // URL string
             halfResImg = axie['image'].substring(0, axie['image'].length - 20) + 'half.png';
             axie['image'] = halfResImg;
