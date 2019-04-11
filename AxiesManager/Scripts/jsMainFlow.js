@@ -221,8 +221,9 @@ function loadDatatable() {
                     data: function (data, type, row) {
                         let birthTimestamp = data['birthDate'];
                         let nowTimestamp = Math.floor(Date.now() / 1000);
-                        let twoDays = 172800;
-                        let fourDays = twoDays * 2;
+                        let oneDay = 172800;
+                        let threeDays = oneDay * 3;
+                        let fiveDays = oneDay * 3;
                         let expForBreeding = expRequirPerBreedCount[data['breedCount']];
 
                         if (data['stage'] == 4) {
@@ -231,9 +232,9 @@ function loadDatatable() {
                             } else {
                                 return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + expForBreeding + ')</span>';
                             }
-                        } else if (data['stage'] == 3 && nowTimestamp - fourDays >= birthTimestamp ) {
+                        } else if (data['stage'] == 3 && nowTimestamp - fiveDays >= birthTimestamp ) {
                             return 'Ready to become adult!'
-                        } else if (data['stage'] == 2 && nowTimestamp - twoDays >= birthTimestamp ) {
+                        } else if (data['stage'] == 2 && nowTimestamp - threeDays >= birthTimestamp ) {
                             return 'Ready to become petite!'
                         } else {
                             return 'Underaged!';
