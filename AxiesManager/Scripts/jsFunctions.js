@@ -66,7 +66,6 @@ function requestSingleAxie() {
                 console.log(error);
             })
     });
-    loadAxiesLowResImages();
     return promise;
 }
 
@@ -101,9 +100,11 @@ function getAllPagesToArray() {
 
 function loadAxiesLowResImages() {
     axiesDataArr.forEach(axie => {
-        let halfResImg; // URL string
-        halfResImg = axie['image'].substring(0, axie['image'].length - 20) + 'half.png';
-        axie['image'] = halfResImg;
+        if (axie['stage'] == 4) {
+            let halfResImg; // URL string
+            halfResImg = axie['image'].substring(0, axie['image'].length - 20) + 'half.png';
+            axie['image'] = halfResImg;
+        }
     })
 }
 
