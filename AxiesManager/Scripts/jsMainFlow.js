@@ -219,11 +219,12 @@ function loadDatatable() {
                 },
                 {
                     data: function (data, type, row) {
-                        let birthTimestamp = data['birthDate'];
-                        let nowTimestamp = Math.floor(Date.now() / 1000);
-                        let oneDay = 172800;
-                        let threeDays = oneDay * 3;
-                        let fiveDays = oneDay * 3;
+                        let timeBirth = new Date(data['birthDate'] * 1000);
+                        let timeNow = new Date();
+                        let petiteDate = new Date(timeBirth)
+                        petiteDate.setDate(timeBirth.getDate() + setParameters['reqDaysForPetite']);
+                        let adultDate = new Date(timeBirth);
+                        adultDate.setDate(timeBirth.getDate() + setParameters['reqDaysForAdult']);
                         let expForBreeding = expRequirPerBreedCount[data['breedCount']];
 
                         if (data['stage'] == 4) {
@@ -232,10 +233,10 @@ function loadDatatable() {
                             } else {
                                 return 'No <br /> <span style="font-size: 11px"> (<span style="color: #630000; font-weight: bold;">' + data['exp'] + '</span>/' + expForBreeding + ')</span>';
                             }
-                        } else if (data['stage'] == 3 && nowTimestamp - fiveDays >= birthTimestamp ) {
-                            return 'Ready to become adult!'
-                        } else if (data['stage'] == 2 && nowTimestamp - threeDays >= birthTimestamp ) {
-                            return 'Ready to become petite!'
+                        } else if (data['stage'] == 2 && timeNow >= petiteDate) {
+                            return 'Ready to become petite!';
+                        } else if (data['stage'] == 3 && timeNow >= adultDate) {
+                            return 'Ready to become adult!';
                         } else {
                             return 'Underaged!';
                         }
@@ -247,8 +248,7 @@ function loadDatatable() {
                     className: 'date', width: 'auto', searchable: false,
                     render: function (data, type, row) {
                         var timestamp = data;
-                        var offset = new Date().getTimezoneOffset() * 60; // Offset in seconds
-                        var pubDate = new Date((timestamp + offset) * 1000).toLocaleString();
+                        var pubDate = new Date((timestamp) * 1000).toLocaleString();
                         return pubDate;
                     }
                 },
