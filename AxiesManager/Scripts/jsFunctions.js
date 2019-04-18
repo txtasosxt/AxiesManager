@@ -70,17 +70,14 @@ function requestSingleAxie() {
             let axieIDs = searchInput.split(',');
             axieIDs.forEach(axieID => {
                 URLaxies.push(axios.get(BASE_URL + axieID));
-                console.log(URLaxies)
             })
         } else {
             let axieID = searchInput;
             URLaxies.push(axios.get(BASE_URL + axieID));
-            console.log(URLaxies)
         }
         console.log(URLaxies)
         await axios.all(URLaxies)
             .then(allAxiesObj => {
-                console.log(allAxiesObj)
                 allAxiesObj.forEach(singleAxieObj => {
                     axiesDataArr.push(singleAxieObj['data']);
                 });
