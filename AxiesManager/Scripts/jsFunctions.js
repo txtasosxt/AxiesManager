@@ -1,5 +1,11 @@
 ﻿let URLaxies;
 let rowSelections = [];
+let searchInput;
+let ethAddress;
+let axiesDataObj = {};
+let axiesDataArr = [];
+let battleTeams = {};
+let tableExists = 0; //Boolean, used to check if Table already exists
 const axiesPerPage = 12;
 const expRequirPerBreedCount = [700, 900, 900, 1500, 2400, 3000, 3000]
 let accountTotalMorale = 0;
@@ -56,7 +62,7 @@ function requestAxies() {
 function requestSingleAxie() {
     console.log('Requesting a single Axie\'s info');
     const BASE_URL = 'https://axieinfinity.com/api/axies/';
-    let axieID = ethAddress;
+    let axieID = searchInput;
     URLaxies = BASE_URL + axieID;
 
     let promise = new Promise(function (resolve, reject) {
@@ -222,6 +228,12 @@ function getBodyParts() {
 function getBattleTeams() {
     let promise = new Promise(function (resolve, reject) {
         console.log('getBattleTeams called')
+
+        if (ethAddress == undefined) {
+            resolve();
+            throw new Error('No ethereum address to get teams');
+        }
+
         const BASE_URL = 'https://api.axieinfinity.com/v1/battle/teams/';
         let offset = 0; // offset = page
         let count = 1; // Number of teams to load
@@ -233,6 +245,8 @@ function getBattleTeams() {
             .then(response => {
                 count = response['data']['total'];
                 URLteams = BASE_URL + '?address=' + ethAddress + '&offset=' + offset + '&count=' + count + '&no_limit=' + noLimit;
+                console.log(URLteams)
+
                 axios.get(URLteams)
                     .then(response => {
                         battleTeams = response;
@@ -252,6 +266,19 @@ function getBattleTeams() {
 function loadBattleTeams() {
     let promise = new Promise(function (resolve, reject) {
         console.log('loadBattleTeams called');
+
+        if (ethAddress == undefined) {
+            axiesDataArr.forEach(element => {
+                element['battleTeam'] = [];
+                element['battleTeam'].push({
+                    name: '',
+                    teamID: '',
+                    axieTeamPosition: 0
+                })
+            });
+            resolve();
+            throw new Error();
+        }
 
         for (let i = 0; i < axiesDataArr.length; i++) {
             axiesDataArr[i]['battleTeam'] = [];

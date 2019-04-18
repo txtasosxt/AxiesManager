@@ -1,10 +1,4 @@
-﻿let ethAddress;
-let axiesDataObj = {};
-let axiesDataArr = [];
-let battleTeams = {};
-let tableExists = 0; //Boolean, used to check if Table already exists
-
-// Initialise jQueryUI elements
+﻿// Initialise jQueryUI elements
 window.addEventListener('load', async function () {
     $('button').button({
         disabled: true,
@@ -45,27 +39,14 @@ window.addEventListener('load', async function () {
     });
 });
 
-// Checks for address change (setInterval from .ts)
-function checkEthAddressChange() {
-    web3.eth.getAccounts(function (error, result) {
-        if (result[0] == ethAddress) {
-            return;
-        } else {
-            updateEthAddress();
-        }
-        console.log('checkEthAddressChange DONE');
-    });
-};
-
 // Saves the Ethereum address and starts the program
-function updateEthAddress(address) {
-    if (address == null || address == undefined || address == '') {
+function updateEthAddress(searchField) {
+    if (searchField == null || searchField == undefined || searchField == '') {
         alert('Please fill an Ethereum address!');
         return;
     }
-    if (address !== undefined) {
-        ethAddress = address;
-        $('#ethAddressInput').val(ethAddress);
+    if (searchField !== undefined) {
+        searchInput = searchField;
         functionsFlow();
     }
 }
@@ -74,8 +55,8 @@ function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
     // START of setting chained promises
-    let promise1 = new Promise(function (resolve, reject) {
-        if (ethAddress.length != 42) {
+    let promiseAxies = new Promise(function (resolve, reject) {
+        if (searchInput.length != 42) {
             requestSingleAxie() // (1) Get the Axie's basic info
                 .then(() => {
                     if (axiesDataArr[0] == '' || axiesDataArr[0] == null || axiesDataArr[0] == undefined) {
@@ -94,6 +75,7 @@ function functionsFlow() {
                 })
 
         } else {
+            ethAddress = searchInput;
             requestAxies() // (1) Get the 1st page
                 .then(() => {
                     return getAllPagesToArray(); // (2) Get all the pages
@@ -109,7 +91,7 @@ function functionsFlow() {
                 })
         }
     })
-    let promise2 = new Promise(function (resolve, reject) {
+    let promiseBattles = new Promise(function (resolve, reject) {
         getBattleTeams() // Get all the teams
             .then(() => {
                 resolve();
@@ -119,7 +101,7 @@ function functionsFlow() {
             })
     })
     // END of setting chained promises
-    Promise.all([promise1, promise2])
+    Promise.all([promiseAxies, promiseBattles])
         .then(() =>  {
             return loadBattleTeams(); // Load all the teams data into the "axiesDataArr" Array
         })
@@ -147,7 +129,7 @@ function loadDatatable() {
             deferRender: false,
             autoWidth: true,
             fixedHeader: true,
-            select: {
+            select: { // Setting up the row selector
                 style: 'multi',
                 selector: 'td:not(:first-child):not(.axieBattleTeam)'
             },
@@ -208,6 +190,9 @@ function loadDatatable() {
                     data: function (data, type, row) {
                         if (data['stage'] == 2 || data['stage'] == 3) {
                             return '<span style="font-style:italic">Not an adult</span>';
+                        }
+                        if (ethAddress == undefined) {
+                            return '';
                         }
                         let teamsList = ''; // String
                         for (i = 0; i < data['battleTeam'].length; i++) {
