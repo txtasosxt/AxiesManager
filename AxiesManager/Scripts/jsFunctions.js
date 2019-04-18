@@ -17,34 +17,34 @@ const setParameters = {
 
 //// Axie Data [START] ////
 function requestAxies() {
-    console.log('requestAxies called')
-    const BASE_URL = 'https://axieinfinity.com/api/addresses/';
-    let offset = 0; // offset = Axie to start counting
-    let stage = ''; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
-    let ampersandRequired = false;
-    if ($("#checkbox-filter-adult").is(':checked')) {
-        stage = '4';
-        ampersandRequired = true;
-    }
-    if ($("#checkbox-filter-petite").is(':checked')) {
-        if (ampersandRequired) {
-            stage += '&stage='
-        }
-        stage += '3';
-        ampersandRequired = true;
-    }
-    if ($("#checkbox-filter-lavra").is(':checked')) {
-        if (ampersandRequired) {
-            stage += '&stage='
-        }
-        stage += '2';
-        ampersandRequired = true;
-    }
-    console.log('Axies stage filter:' + stage);
-    URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
-    // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
-
     let promise = new Promise(function (resolve, reject) {
+        console.log('requestAxies called')
+        const BASE_URL = 'https://axieinfinity.com/api/addresses/';
+        let offset = 0; // offset = Axie to start counting
+        let stage = ''; // stage1 = Egg, 2 = Larva, 3 = Petite, 4 = Adult
+        let ampersandRequired = false;
+        if ($("#checkbox-filter-adult").is(':checked')) {
+            stage = '4';
+            ampersandRequired = true;
+        }
+        if ($("#checkbox-filter-petite").is(':checked')) {
+            if (ampersandRequired) {
+                stage += '&stage='
+            }
+            stage += '3';
+            ampersandRequired = true;
+        }
+        if ($("#checkbox-filter-lavra").is(':checked')) {
+            if (ampersandRequired) {
+                stage += '&stage='
+            }
+            stage += '2';
+            ampersandRequired = true;
+        }
+        console.log('Axies stage filter:' + stage);
+        URLaxies = BASE_URL + ethAddress + '/axies?stage=' + stage;
+        // example: https://axieinfinity.com/api/addresses/0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22/axies?stage=3&stage=4
+
         // Requesting the 1st page of the Axies collection.
         axios.get(URLaxies)
             .then(response => {
@@ -60,16 +60,30 @@ function requestAxies() {
 }
 
 function requestSingleAxie() {
-    console.log('Requesting a single Axie\'s info');
-    const BASE_URL = 'https://axieinfinity.com/api/axies/';
-    let axieID = searchInput;
-    URLaxies = BASE_URL + axieID;
+    let promise = new Promise(async function (resolve, reject) {
+        console.log('Requesting a single Axie\'s info');
+        const BASE_URL = 'https://axieinfinity.com/api/axies/';
+        URLaxies = [];
 
-    let promise = new Promise(function (resolve, reject) {
-        axios.get(URLaxies)
-            .then(response => {
-                axiesDataObj = response;
-                axiesDataArr.push(axiesDataObj['data']);
+        // Check if the searchInput includes multiple individual Axies
+        if (searchInput.search(',') > 0) {
+            let axieIDs = searchInput.split(',');
+            axieIDs.forEach(axieID => {
+                URLaxies.push(axios.get(BASE_URL + axieID));
+                console.log(URLaxies)
+            })
+        } else {
+            let axieID = searchInput;
+            URLaxies.push(axios.get(BASE_URL + axieID));
+            console.log(URLaxies)
+        }
+        console.log(URLaxies)
+        await axios.all(URLaxies)
+            .then(allAxiesObj => {
+                console.log(allAxiesObj)
+                allAxiesObj.forEach(singleAxieObj => {
+                    axiesDataArr.push(singleAxieObj['data']);
+                });
                 resolve('Promise done!');
             })
             .catch(error => {
