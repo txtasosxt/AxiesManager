@@ -229,6 +229,17 @@ function loadDatatable() {
                     title: 'Breedable (Synced)', width: '70px', className: 'centerAligned expStatus'
                 },
                 {
+                    data: function (data, type, row) {
+                        let allPartsArr = '';
+                        data['parts'].forEach(part => {
+                            allPartsArr += part.name + ', ';
+                        });
+                        allPartsArr = allPartsArr.substring(0, allPartsArr.length - 2); // Remove the ', ' from the end
+                        return allPartsArr;
+                    },
+                    title: 'All Parts', width: '150px', className: 'allParts'
+                },
+                {
                     data: 'birthDate', title: 'Birth Date (Local)', type: 'date',
                     className: 'date', width: 'auto', searchable: false,
                     render: function (data, type, row) {

@@ -296,6 +296,10 @@ table.dataTable tbody .attackScore, table.dataTable tbody .defenseScore {
     font-weight: bold;
 }
 
+table.dataTable tbody .allParts {
+    font-size: 12px;
+}
+
 table.dataTable tbody .centerAligned {
     text-align: center;
 }
