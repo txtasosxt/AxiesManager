@@ -1,17 +1,19 @@
 # AxiesManager
 
-Visit the app <a href="./AxiesManager/index.html">HERE</a>
+Visit the app <a href="./AxiesManager/">HERE</a>
 
 
 ToDoList
 ---
-- Connector with the marketplace that will scan the market price and provide suggestions on the user's Axie prices. (Gotta look into AI)
+- Connector with the marketplace that will scan the market price and provide suggestions on the user's Axie prices.
 - Preview of the teams' setup using Axies' "avatar".
 - Add a compare tool between Axies.
 
 ChangeLog
 ---
-11/04/2019 | Wrong address are now handled properly and individual Axies can be searched. 
+18/04/2019 | Multiple Axies seperated by comma can now be searched. 
+- - -
+11/04/2019 | Wrong addresses are now handled properly and individual Axies can be searched. 
 - - -
 07/04/2019 | Added Attack and Defense scores. 
 - - -
