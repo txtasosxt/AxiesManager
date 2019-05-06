@@ -231,10 +231,12 @@ function loadDatatable() {
                 {
                     data: function (data, type, row) {
                         let allPartsArr = '';
-                        data['parts'].forEach(part => {
-                            allPartsArr += part.name + ', ';
-                        });
+                        if (data['parts'].length != undefined) {
+                            data['parts'].forEach(part => {
+                                allPartsArr += part.name + ', ';
+                            });
                         allPartsArr = allPartsArr.substring(0, allPartsArr.length - 2); // Remove the ', ' from the end
+                        }
                         return allPartsArr;
                     },
                     title: 'All Parts', width: '150px', className: 'allParts'
