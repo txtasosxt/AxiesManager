@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Land Items Marketplace Assistant</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Dependencies/jquery-ui-DotLuv/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="Dependencies/DataTables/datatables.min.css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script type="text/javascript" src="Dependencies/DataTables/datatables.min.js"></script>
+    <script type="text/javascript" src="Dependencies/jquery-ui-DotLuv/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="Dependencies/Chart.min.js"></script>
+    <script type="text/javascript" src="Scripts/app.js"></script>
+    <script type="text/javascript" src="Scripts/jsFunctions.js"></script>
+    <script type="text/javascript" src="Scripts/jsMainFlow.js"></script>
+</head>
+<body>
+    <div id="siteHeader">
+        <div style="float: left; margin: 0px;">
+            <h1>Axies Collection Manager</h1>
+        </div>
+        <div>
+            <div class="donation">
+                <span>Encouragement Addresses</span><br />
+                <span>(Ethereum) 0x9FD0078c676AEaFAa41F55dE4c12fa9E080c8b22</span> <br />
+                <span>(Zenzo) ZjamFyAUKUa5v8rjmiimNeUupVjVmTkkWc</span>
+            </div>
+            <div class="whatsNew">
+                <p>
+                    <abbr>
+                        What's new<span>
+                            <b>Updates Log</b>
+                            <br>==================<br>
+                            <b>05/05/2019</b> | Added "All Parts" column.
+                            <br>-----<br>
+                        </span>
+                    </abbr>
+            </div>
+        </div>
+        <div style="border-right: solid 1px; border-left: solid 1px; padding: 5px">
+            <a target="_blank" href="https://zenzo.io/"><span style="font-weight: bold">Zenzo</span> - An ecosystem for the gamer,<br /> by the gamer, through blockchain</a>
+        </div>
+        <div style="border-right: solid 1px; border-left: solid 1px; padding: 5px">
+            <a target="_blank" href="https://land.axieinfinity.com/purchase?r=n9AHjGdq6vqkH1XeTBL6nggMiyI/"><span style="font-weight: bold">Axie Infinity</span> - Buy Land</a>
+        </div>
+
+    </div>
+    <div class="bodyContainer">
+        <div id="mainContainer" style="float: left;">
+            <div class="controlPanel">
+                <div class="breedingCalcContainer">
+                    <button type="button" id="breedingCalcBtn" onclick="openBreedingCalc()">Breeding Calculator</button>
+                    <label for="showDetailsCheck">
+                        <input type="checkbox" name="showDetailsCheck" id="showDetailsCheck">
+                        Show part details in the calculator?
+                    </label>
+                    <span class="explanation" style="font-style:italic">Click multiple rows and preview the possible breeding outcome</span>
+                </div>
+                <div class="ethFieldContainer">
+                    <input id="ethAddressInput" placeholder="Ethereum Address" />
+                    <div id="loadAxiesBtnContainer">
+                        <button type="button" id="loadAxiesBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
+                        <div id="loadAxiesCheckboxesContainer">
+                            <label for="checkbox-filter-adult">Adult<input checked type="checkbox" class="axieStageCheckbox" name="checkbox-filter-adult" id="checkbox-filter-adult">
+                            </label>
+                            <label for="checkbox-filter-petite">Petite<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-petite" id="checkbox-filter-petite">
+                            </label>
+                            <label for="checkbox-filter-lavra">Lavra<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-lavra" id="checkbox-filter-lavra">
+                            </label>
+                        </div>
+                    </div>
+                    <p id="pageReloadWarning">Please reload the page in order to search a new address... for now! I'll fix this in the future I promise!</p>
+                </div>
+                <div id="loader" title="Loading Status">
+                    <p></p>
+                    <div id="axiesLoadingProgressBar"></div>
+                </div>
+            </div>
+            <table class="dataTable row-border" id="axiesTable">
+                <thead>
+                    <tr>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1" aria-sort="descending">ID</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Name</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Class</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">HP</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Defense</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Speed</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Skill</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Morale</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Attack Score</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Defense Score</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Attack</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Average Accuracy</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Team</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Breedable</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">All Parts</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Birth Date (Local)</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
