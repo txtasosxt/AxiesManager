@@ -1,0 +1,432 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: small;
+    margin: 0;
+}
+/* Hide jQueryUI elements before transforming them */
+button {
+    display: none;
+}
+a {
+    color: inherit;
+}
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+a:focus {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover, a:active {
+    text-decoration: none;
+    color: inherit
+}
+
+.bodyContainer {
+    margin: 8px;
+    clear: both;
+}
+
+    .bodyContainer .controlPanel {
+        margin-bottom: 25px;
+        float: left;
+    }
+
+#siteHeader {
+    display: block;
+    float: left;
+    width: 100%;
+    min-height: 75px;
+    background-color: #D0E4F5;
+    margin-bottom: 30px;
+    border-bottom: #1a699c double 5px;
+}
+
+    #siteHeader h1 {
+        margin: 10px;
+        color: #1a699c;
+        line-height: 1em;
+    }
+
+    #siteHeader > div {
+        position: relative;
+        top: 0;
+        margin-left: 40px;
+        float: right;
+    }
+
+    #siteHeader .donation {
+        position: relative;
+        font-size: 0.85em;
+        font-style: italic;
+        text-align: right;
+        padding-right: 8px;
+        display: block;
+        clear: both;
+        float: right;
+    }
+
+    #siteHeader .donation span {
+        float: right;
+    }
+
+.whatsNew {
+    position: relative;
+    font-size: 0.85em;
+    display: block;
+    float: right;
+    clear: both;
+    padding-right: 8px;
+}
+/* START of abbreviation formating */
+abbr span, abbr div {
+    font-family: Calibri;
+}
+
+abbr {
+    cursor: help;
+    text-decoration: none;
+    border-bottom: 1px dotted #eaeaea;
+    border-bottom: 1px dotted rgba(0,0,0,0.4);
+    border-radius: 8px;
+}
+
+    abbr:hover {
+        background: #eaeaea;
+        background: rgba(0,0,0,0.1);
+    }
+
+    abbr span {
+        position: absolute;
+        left: -350px;
+        width: 350px;
+        display: none;
+        z-index: 10;
+        padding: 2px 4px 0;
+        margin: 1.5em 0 0 8px;
+        max-width: 0;
+        border: 1px solid #1a699c;
+        border-radius: 6px;
+        box-shadow: 2px 2px 4px rgba(33, 99, 0, 0.5);
+        background: linear-gradient(#fff, #d0d0d0);
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: visibility 2s linear, opacity 2s linear;
+        -moz-transition: visibility 2s linear, opacity 2s linear;
+        -o-transition: visibility 2s linear, opacity 2s linear;
+        transition: visibility 2s linear, opacity 2s linear;
+    }
+
+    abbr:hover span {
+        display: inline-block;
+        max-width: 400px;
+        visibility: visible;
+        opacity: 1;
+        -webkit-transition-delay: 0s;
+        -moz-transition-delay: 0s;
+        -o-transition-delay: 0;
+        transition-delay: 0s;
+    }
+/* END of abbreviation formating */
+
+.controlPanel .breedingCalcContainer {
+    display: block;
+    margin-bottom: 20px;
+    float: left;
+}
+
+    .controlPanel .breedingCalcContainer .explanation {
+        font-style: italic;
+        font-size: 13px;
+        float: left;
+        display: block;
+        clear: both;
+    }
+
+.controlPanel .ethFieldContainer {
+    display: block;
+    clear: both;
+}
+
+    .controlPanel .ethFieldContainer #ethAddressInput {
+        height: 28px;
+        width: 350px;
+        font-size: 13px;
+        border: 1px solid #333;
+        background: #333 url(Dependencies/jquery-ui-DotLuv/images/ui-bg_dots-small_20_333333_2x2.png) 50% 50% repeat;
+        color: white;
+        border-radius: 4px;
+        padding-left: 5px;
+        float: left;
+    }
+
+    .controlPanel .ethFieldContainer #loadAxiesBtn {
+        height: 32px;
+        font-size: 13px;
+        padding: 5px;
+        float: left;
+        margin-left: 8px;
+    }
+
+    .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer {
+        float: left;
+    }
+        .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer label {
+            font-size: 0.9em;
+            padding: 0.2em 0.5em;
+        }
+
+.breedingCalcContainer #breedingCalcBtn {
+    float: left;
+    margin-right: 8px;
+}
+
+.breedingCalcContainer label {
+    font-size: 12px;
+    display: block;
+    float: left;
+}
+
+#loader {
+    display: block;
+}
+
+    #loader p {
+        font-size: 15px;
+    }
+
+#pageReloadWarning {
+    display: none;
+    font-size: 0.90em;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+.input-disabled {
+    background-color: #EBEBE4;
+    border: 1px solid #ABADB3;
+    padding: 2px 1px;
+}
+
+.dataTables_wrapper {
+    width: auto;
+    width: max-content;
+    width: fit-content;
+    float: left;
+}
+
+/* Start of table styling */
+table.dataTable {
+    border: 1px solid #1C6EA4;
+    background-color: #EEEEEE;
+    text-align: left;
+    table-layout: auto;
+}
+
+    table.dataTable td, table.dataTable th {
+        border: 1px solid #AAAAAA;
+        padding: 3px 2px;
+    }
+
+    table.dataTable tbody tr:hover {
+        background-color: #eaeaea;
+        background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    table.dataTable tbody tr:last-child {
+        text-align: left;
+    }
+
+    table.dataTable tbody td {
+        padding: 0 10px;
+        font-size: 16px;
+    }
+
+    table.dataTable tbody .attackSum {
+        position: relative;
+        padding: 0;
+        min-width: 230px;
+    }
+        table.dataTable tbody .attackSum span {
+            position: absolute;
+            display: block;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid #AAA;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            border-radius: 30%;
+            padding: 8px;
+        }
+
+    .attackBarsContainer {
+        display: block;
+        z-index: -1;
+    }
+
+.dataTable tbody .tableColHP, .dataTable tbody .tableColSkill {
+    min-width: 2em;
+}
+
+.dataTable tbody td.axieClass {
+    text-transform: capitalize;
+}
+
+.dataTable tbody .axieBattleTeam {
+    font-size: 14px;
+}
+    .dataTable tbody .noTeam {
+        background-color: #ffaeae;
+        background-color: rgba(255, 0, 0, 0.3);
+    }
+
+table.dataTable tbody .readyToMorph {
+    background-color: #aeffae;
+    background-color: rgba(0, 255, 0, 0.3);
+}
+
+table.dataTable tbody .attackScore, table.dataTable tbody .defenseScore {
+    font-weight: bold;
+}
+
+table.dataTable tbody .allParts {
+    font-size: 12px;
+}
+
+table.dataTable tbody .centerAligned {
+    text-align: center;
+}
+    table.dataTable tbody .beast {
+        background-color: #fff4db;
+        background-color: rgba(255, 183, 15, 0.15);
+    }
+    table.dataTable tbody .aquatic {
+        background-color: #d9f4f8;
+        background-color: rgba(0, 183, 206, 0.15);
+    }
+    table.dataTable tbody .plant {
+        background-color: #e9f5d9;
+        background-color: rgba(107, 191, 0, 0.15);
+    }
+    table.dataTable tbody .bird {
+        background-color: #ffeef5;
+        background-color: rgba(255, 138, 188, 0.15);
+    }
+    table.dataTable tbody .bug {
+        background-color: #ffe5e3;
+        background-color: rgba(255, 82, 65, 0.15);
+    }
+    table.dataTable tbody .reptile {
+        background-color: #f2ebfe;
+        background-color: rgba(169, 121, 248, 0.15);
+    }
+    table.dataTable tbody .axieThumbnail {
+        max-width: 150px;
+        position: relative;
+        padding: 0;
+    }
+        table.dataTable tbody .axieThumbnail img {
+            position: relative;
+            max-width: 150px;
+            top: -5px;
+            height: 95px;
+            object-fit: cover;
+        }
+        table.dataTable tbody td.axieThumbnail span {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        table .dataTable tbody td.axieThumbnail a {
+            display: block;
+        }
+        table.dataTable tbody td.axieThumbnail a:hover {
+            filter: grayscale(75%);
+        }
+
+    table.dataTable thead, .headerFilters {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-gradient(linear, top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -o-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+        table.dataTable thead tr.headerFilters input {
+            display: block;
+            font-size: 11px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table.dataTable thead th {
+            display: table-cell;
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+            padding: 10px 6px !important;
+        }
+            table.dataTable thead .searchFieldName {
+                min-width:150px;
+            }
+            table.dataTable thead .searchFieldID {
+                max-width: 157px;
+            }
+
+table.dataTable tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: #D0E4F5;
+    background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -webkit-gradient(linear, top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -o-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    border-top: 2px solid #444444;
+}
+        table.dataTable tfoot td {
+            font-size: 14px;
+        }
+        table.dataTable tfoot .links {
+            text-align: right;
+        }
+            table.dataTable tfoot .links a {
+                display: inline-block;
+                background: #1C6EA4;
+                color: #FFFFFF;
+                padding: 2px 8px;
+                border-radius: 5px;
+            }
+    table.dataTable tbody > .selected {
+        background-color: #cfd9e6;
+        background-color: rgba(176, 190, 217, 0.5) !important;
+    }
+    table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+        background-position: top right !important;
+    }
+
+/* End of table styling */
+.tooltipWindow {
+    font-size: 0.85em !important;
+}
+
+.ui-button .ui-icon {
+    background-image: url(Dependencies/jquery-ui-DotLuv/images/ui-icons_ffffff_256x240.png) !important;
+}
+
+.ui-button:focus .ui-icon {
+    background-image: url(Dependencies/jquery-ui-DotLuv/images/ui-icons_9ccdfc_256x240.png) !important;
+}

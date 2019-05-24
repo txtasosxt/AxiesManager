@@ -1,0 +1,9 @@
+{
+  "name": "land-marketplace",
+  "version": "0.0.0",
+  "description": "LandMarketplace",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  }
+}

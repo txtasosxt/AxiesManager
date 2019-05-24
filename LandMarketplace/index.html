@@ -13,14 +13,13 @@
     <script type="text/javascript" src="Dependencies/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="Dependencies/jquery-ui-DotLuv/jquery-ui.min.js"></script>
     <script type="text/javascript" src="Dependencies/Chart.min.js"></script>
-    <script type="text/javascript" src="Scripts/app.js"></script>
     <script type="text/javascript" src="Scripts/jsFunctions.js"></script>
     <script type="text/javascript" src="Scripts/jsMainFlow.js"></script>
 </head>
 <body>
     <div id="siteHeader">
         <div style="float: left; margin: 0px;">
-            <h1>Axies Collection Manager</h1>
+            <h1>Land Items Marketplace Assistant</h1>
         </div>
         <div>
             <div class="donation">
@@ -51,28 +50,11 @@
     <div class="bodyContainer">
         <div id="mainContainer" style="float: left;">
             <div class="controlPanel">
-                <div class="breedingCalcContainer">
-                    <button type="button" id="breedingCalcBtn" onclick="openBreedingCalc()">Breeding Calculator</button>
-                    <label for="showDetailsCheck">
-                        <input type="checkbox" name="showDetailsCheck" id="showDetailsCheck">
-                        Show part details in the calculator?
-                    </label>
-                    <span class="explanation" style="font-style:italic">Click multiple rows and preview the possible breeding outcome</span>
-                </div>
                 <div class="ethFieldContainer">
-                    <input id="ethAddressInput" placeholder="Ethereum Address" />
                     <div id="loadAxiesBtnContainer">
-                        <button type="button" id="loadAxiesBtn" onclick="updateEthAddress(document.getElementById('ethAddressInput').value)">Load Axies</button>
-                        <div id="loadAxiesCheckboxesContainer">
-                            <label for="checkbox-filter-adult">Adult<input checked type="checkbox" class="axieStageCheckbox" name="checkbox-filter-adult" id="checkbox-filter-adult">
-                            </label>
-                            <label for="checkbox-filter-petite">Petite<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-petite" id="checkbox-filter-petite">
-                            </label>
-                            <label for="checkbox-filter-lavra">Lavra<input type="checkbox" class="axieStageCheckbox" name="checkbox-filter-lavra" id="checkbox-filter-lavra">
-                            </label>
-                        </div>
+                        <button type="button" id="loadAxiesBtn" onclick="updateEthAddress()">Load All Active Sales</button>
                     </div>
-                    <p id="pageReloadWarning">Please reload the page in order to search a new address... for now! I'll fix this in the future I promise!</p>
+                    <p id="pageReloadWarning"></p>
                 </div>
                 <div id="loader" title="Loading Status">
                     <p></p>
@@ -83,21 +65,13 @@
                 <thead>
                     <tr>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1" aria-sort="descending">ID</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Type</th>
                         <th aria-controls="axiesTable" rowspan="1" colspan="1">Name</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Class</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">HP</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Defense</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Speed</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Skill</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Morale</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Attack Score</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Defense Score</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Total Attack</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Average Accuracy</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Team</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Breedable</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">All Parts</th>
-                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Birth Date (Local)</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Rarity</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Current Price</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Ending Price</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Post Time</th>
+                        <th aria-controls="axiesTable" rowspan="1" colspan="1">Effects</th>
                     </tr>
                 </thead>
             </table>
