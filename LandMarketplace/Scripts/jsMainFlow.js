@@ -19,31 +19,6 @@ window.addEventListener('load', async function () {
     });
 })
 
-// Initialise MetaMask
-window.addEventListener('load', async function () {
-    if (window.ethereum) {
-        // new privacy mode
-        window.web3 = new Web3(ethereum);
-        try {
-            // Request account access if needed
-            await ethereum.enable();
-        } catch (error) {
-            console.log(error);
-        }
-    } else if (window.web3) {
-        // Old way of asking for web3
-        window.web3 = new Web3(web3.currentProvider);
-    }
-    web3.eth.getAccounts(function (error, result) {
-        $('#ethAddressInput').val(result[0]);
-    });
-});
-
-// Saves the Ethereum address and starts the program
-function updateEthAddress() {
-    functionsFlow();
-}
-
 function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
@@ -146,8 +121,14 @@ function loadDatatable() {
                     title: 'Ending Price', width: '100px', className: 'centerAligned'
                 },
                 {
-                    data: 'startingTimestamp', title: 'Post Time', type: 'date',
-                    className: 'date', width: '150px', searchable: false,
+                    data: function (data, type, row) {
+                        if (type == 'sort' || type == 'filter') {
+                            return data['startingTimestamp'];
+                        } else {
+                            return data['startingTimestamp'];
+                        }
+                    }, title: 'Post Time', width: '150px', className: 'axieClass',
+                    className: 'date', searchable: false,
                     render: function (data, type, row) {
                         var timestamp = data;
                         var pubDate = new Date((timestamp) * 1000).toLocaleString();
