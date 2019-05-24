@@ -103,13 +103,13 @@ function loadDatatable() {
                     data: function (data, type, row) {
                         if (type === 'sort' || type === 'filter') {
                             if (data['assetType'] == 'land') {
-                                return '';
+                                return data['landType'];
                             } else {
                                 return data['name'];
                             }
                         }
                         if (data['assetType'] == 'land') {
-                            return '-';
+                            return data['landType'];
                         } else {
                             return data['name'];
                         }
