@@ -35,8 +35,8 @@ function functionsFlow() {
                 console.log(error);
             })
     })
-    /*let promiseLands = new Promise(function (resolve, reject) {
-        requestItems() // (1) Get the 1st page
+    let promiseLands = new Promise(function (resolve, reject) {
+        requestLands() // (1) Get the 1st page
             .then(() => {
                 return getLandPagesToArray(); // (2) Get all the pages
             })
@@ -46,9 +46,10 @@ function functionsFlow() {
             .catch(error => {
                 console.log(error);
             })
-    })*/
-    Promise.all([promiseItems, /*promiseLands*/])
+    })
+    Promise.all([promiseItems, promiseLands])
         .then(() => {
+            mergeItemsAndLand();
             loadDatatable();
         })
         .catch(error => {
@@ -70,7 +71,7 @@ function loadDatatable() {
             deferRender: false,
             autoWidth: false,
             fixedHeader: true,
-            data: itemsDataArr,
+            data: landAndItems,
             columns: [
                 {
                     data: function (data, type, row) {
@@ -178,7 +179,6 @@ function loadDatatable() {
             initComplete: () => {
                 addTableSearchFields();
                 //enablePartsEffectsTooltips();
-                //rowSelector();
                 tableExists = 1;
             }
         });

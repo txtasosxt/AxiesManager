@@ -1,5 +1,5 @@
-﻿//const baseURL = 'https://axieinfinity.com/marketplace-api/query-assets?sorting=recently_listed';
-const baseURL = 'https://axieinfinity.com/marketplace-api/query-assets?sorting=highest_price';
+﻿const baseURL = 'https://axieinfinity.com/marketplace-api/query-assets?sorting=recently_listed';
+//const baseURL = 'https://axieinfinity.com/marketplace-api/query-assets?sorting=highest_price';
 const rarities = ['common','rare','epic','mystic'];
 let itemsDataObj = {};
 let landDataObj = {};
@@ -7,7 +7,7 @@ let itemsDataArr = [];
 let landDataArr = [];
 let landAndItems = [];
 let tableExists = 0; //Boolean, used to check if Table already exists
-const itemsPerPage = 900;
+const itemsPerPage = 1000;
 let accountTotalMorale = 0;
 let accountTotalAttack = 0;
 const setParameters = {
@@ -26,8 +26,11 @@ function requestItems() {
             .then(response => {
                 itemsDataObj = response;
                 itemsDataArr = itemsDataObj['data']['results'];
-                console.log(itemsDataObj)
-                console.log(itemsDataArr)
+                console.log('-----------');
+                console.log('First items query\'s object and array');
+                console.log(itemsDataObj);
+                console.log(itemsDataArr);
+                console.log('-----------');
                 resolve();
             })
             .catch(error => {
@@ -88,7 +91,10 @@ function getItemPagesToArray() {
             }
             await axios.all(allPages)
                 .then(allPagesObj => {
+                    console.log('-----------');
+                    console.log('Items pages');
                     console.log(allPagesObj);
+                    console.log('-----------');
                     allPagesObj.forEach(singlePageObj => {
                         singlePageObj['data']['results'].forEach(singleAxie => {
                             itemsDataArr.push(singleAxie);
@@ -104,35 +110,69 @@ function getItemPagesToArray() {
     return promise;
 };
 
+function requestLands() {
+    let promise = new Promise(async function (resolve, reject) {
+        console.log('requestItems called');
+        let URL = `${baseURL}&offset=0&count=${itemsPerPage}&item_name=land`;
+
+        // Requesting the 1st page of the Axies collection.
+        axios.get(URL)
+            .then(response => {
+                landDataObj = response;
+                landDataArr = landDataObj['data']['results'];
+                console.log('-----------');
+                console.log('First lands query\'s object and array');
+                console.log(landDataObj)
+                console.log(landDataArr)
+                console.log('-----------');
+                resolve();
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    });
+    return promise;
+};
+
 function getLandPagesToArray() {
     let promise = new Promise(async function (resolve, reject) {
-        /*if (itemsDataObj['data']['total'] > itemsPerPage) {
+        if (landDataObj['data']['total'] > itemsPerPage) {
             let allPages = [];
 
-            for (let i = 1; i <= Math.ceil(itemsDataObj['data']['total'] / itemsPerPage); i++) {
-                allPages.push(axios.get(`${URL}&offset=${i * itemsPerPage}&count=${itemsPerPage}`));
-                console.log(`${URL}&offset=${i * itemsPerPage}&count=${itemsPerPage}`);
+            for (let i = 1; i <= Math.ceil(landDataObj['data']['total'] / itemsPerPage); i++) {
+                allPages.push(axios.get(`${baseURL}&offset=${i * itemsPerPage}&count=${itemsPerPage}`));
+                console.log(`${baseURL}&offset=${i * itemsPerPage}&count=${itemsPerPage}`);
             }
             await axios.all(allPages)
                 .then(allPagesObj => {
+                    console.log('-----------');
+                    console.log('Lands pages');
                     console.log(allPagesObj);
+                    console.log('-----------');
                     allPagesObj.forEach(singlePageObj => {
-                        singlePageObj['data']['results'].forEach(singleAxie => {
-                            itemsDataArr.push(singleAxie);
+                        singlePageObj['data']['results'].forEach(singleLand => {
+                            landDataArr.push(singleLand);
                         })
                     })
                 })
                 .catch(error => {
                     console.log(error);
                 });
-        }*/
+        }
         resolve('Promise done!');
     });
     return promise;
 };
 
 function mergeItemsAndLand() {
-
+    landDataArr.forEach(land => {
+        let exists;
+        exists = itemsDataArr.findIndex(mixedItems => mixedItems.assetType == 'land' && mixedItems.col == land.col && mixedItems.row == land.row);
+        if (exists == -1) {
+            landAndItems.push(land);
+        }
+    });
+    landAndItems = landAndItems.concat(itemsDataArr);
 };
 
 
@@ -152,35 +192,6 @@ function capitalize(string) {
 };
 
 //// Data Formating and Manipulation Functions [END] ////
-
-
-//// Prices and Marketplace [START] ////
-function axieValueCalculator(axie, attackRating, defenseRating) {
-    let valueRating = 0;
-    let expMdf = 0.1;
-    let atkRatingMdf = 1;
-    let defRatingMdf = 1;
-
-    return valueRating;
-};
-//// Prices and Marketplace [END] ////
-
-
-//// Links & Redirections [START] ////
-function openBreedingCalc() {
-    let table = $('#axiesTable').DataTable();
-    let axie1 = table.rows(rowSelections).data()[0]['id'];
-    let axie2 = ''
-    if (table.rows(rowSelections).data().length > 1) {
-        axie2 = table.rows(rowSelections).data()[1]['id']
-    }
-    let showDetails = ''
-    if ($('#showDetailsCheck').prop('checked') == true) {
-        showDetails = '&showDetails=true'
-    }
-    window.open('https://freakitties.github.io/axie/calc.html?sireId=' + axie1 + '&matronId=' + axie2 + showDetails, '_blank');
-};
-//// Links & Redirections [END] ////
 
 
 //// DOM Formating and jQuery UI [START] ////
@@ -245,97 +256,6 @@ function enablePartsEffectsTooltips() {
         },
         classes: {
             "ui-tooltip": "tooltipWindow"
-        }
-    });
-};
-
-function attackBarsInit(selectedElement, attackBeastBug, attackPlantReptile, attackAquaticBird) {
-    let thisCanvas = selectedElement;
-    let classAttack = [attackBeastBug, attackPlantReptile, attackAquaticBird];
-    //let thisCanvas2d = thisCanvas.getContext('2d');
-
-    new Chart(thisCanvas, {
-        type: 'horizontalBar',
-        data: {
-            labels: ['Beast / Bug', 'Plant / Reptile', 'Aquatic / Bird'],
-            datasets: [{
-                label: 'Total Attack',
-                data: classAttack,
-                backgroundColor: [
-                    'rgba(255, 183, 15, 0.3)',
-                    'rgba(107, 191, 0, 0.3)',
-                    'rgba(0, 183, 206, 0.3)',
-                ],
-                borderColor: [
-                    'rgba(255, 183, 15, 1)',
-                    'rgba(107, 191, 0, 1)',
-                    'rgba(0, 183, 206, 1)',
-                ],
-                borderWidth: 1,
-            }]
-        },
-        options: {
-            tooltips: {
-                titleFontSize: 11,
-                bodyFontSize: 10,
-                position: 'nearest'
-            },
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        mirror: true,
-                        fontColor: '#000'
-                    },
-                    gridLines: {
-                        display: false
-                    },
-                    barPercentage: 1
-                }],
-                xAxes: [{
-                    ticks: {
-                        suggestedMin: 0,
-                        suggestedMax: 100,
-                        display: false
-                    },
-                    gridLines: {
-                        display: false
-                    }
-                }]
-            }
-        }
-    });
-};
-
-// Checks if more than 2 rows have been selected and diselects the first one 
-function rowSelector() {
-    let table = $('#axiesTable').DataTable();
-
-    table.on('select', function (event, dt, type, sel) {
-        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
-            if (rowSelections.length == 2) {
-                dt.rows(rowSelections[0]).deselect()
-            }
-            rowSelections.push(sel[0])
-            if (rowSelections.length > 0 && $("button#breedingCalcBtn").button("option", "disabled") == true) {
-                $('button#breedingCalcBtn').button('enable');
-                $('#showDetailsCheck').checkboxradio('enable');
-            }
-        }
-    });
-    table.on('deselect', function (event, dt, type, sel) {
-        if (sel !== undefined) { // If sel == undefined then the selection it's a text selection, not a row selection
-            let index = rowSelections.indexOf(sel[0]);
-            if (index !== -1) {
-                rowSelections.splice(index, 1);
-            }
-            if (rowSelections.length == 0 && $("button#breedingCalcBtn").button("option", "disabled") == false) {
-                $('button#breedingCalcBtn').button('disable');
-                $('#showDetailsCheck').checkboxradio('disable');
-            }
         }
     });
 };
