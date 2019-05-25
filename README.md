@@ -1,5 +1,8 @@
-# AxiesManager
+# Land Marketplace
+Visit the app <a href="./LandMarketplace/">HERE</a>
 
+
+# Axies Manager
 Visit the app <a href="./AxiesManager/">HERE</a>
 
 
