@@ -23,21 +23,37 @@ function functionsFlow() {
     console.log('functionsFlow called')
     loadingScreenInit();
     // START of setting chained promises
-    let promiseAxies = new Promise(function (resolve, reject) {
-        requestAxies() // (1) Get the 1st page
+    let promiseItems = new Promise(function (resolve, reject) {
+        requestItems() // (1) Get the 1st page
             .then(() => {
-                return getAllPagesToArray(); // (2) Get all the pages
+                return getItemPagesToArray(); // (2) Get all the pages
             })
             .then(() => {
                 resolve();
-            })
-            .then(() => {
-                loadDatatable();
             })
             .catch(error => {
                 console.log(error);
             })
     })
+    /*let promiseLands = new Promise(function (resolve, reject) {
+        requestItems() // (1) Get the 1st page
+            .then(() => {
+                return getLandPagesToArray(); // (2) Get all the pages
+            })
+            .then(() => {
+                resolve();
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    })*/
+    Promise.all([promiseItems, /*promiseLands*/])
+        .then(() => {
+            loadDatatable();
+        })
+        .catch(error => {
+            console.log(error);
+        })
 }
 
 function loadDatatable() {
@@ -52,9 +68,9 @@ function loadDatatable() {
             paging: true,
             pageLength: 100,
             deferRender: false,
-            autoWidth: true,
+            autoWidth: false,
             fixedHeader: true,
-            data: axiesDataArr,
+            data: itemsDataArr,
             columns: [
                 {
                     data: function (data, type, row) {
