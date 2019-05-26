@@ -169,12 +169,13 @@ abbr {
         height: 32px;
         font-size: 13px;
         padding: 5px;
-        float: left;
-        margin-left: 8px;
+        float: right;
+        margin: 4px 0 0 8px;
     }
 
     .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer {
         float: left;
+        margin-top: 4px;
     }
         .controlPanel .ethFieldContainer #loadAxiesCheckboxesContainer label {
             font-size: 0.9em;
