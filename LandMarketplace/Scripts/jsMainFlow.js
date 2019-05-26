@@ -167,7 +167,7 @@ function loadDatatable() {
                             return data['effects'];
                         }
                     },
-                    title: 'Effects', width: 'auto'
+                    title: 'Effects', width: 'auto', className: 'smallFont'
                 },
             ],
             columnDefs: [

@@ -239,7 +239,7 @@ function loadDatatable() {
                         }
                         return allPartsArr;
                     },
-                    title: 'All Parts', width: '150px', className: 'allParts'
+                    title: 'All Parts', width: '150px', className: 'smallFont'
                 },
                 {
                     data: 'birthDate', title: 'Birth Date (Local)', type: 'date',

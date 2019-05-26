@@ -296,7 +296,7 @@ table.dataTable tbody .attackScore, table.dataTable tbody .defenseScore {
     font-weight: bold;
 }
 
-table.dataTable tbody .allParts {
+table.dataTable tbody .smallFont {
     font-size: 12px;
 }
 
